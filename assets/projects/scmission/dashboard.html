@@ -1,0 +1,2502 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Agentic AI Distribution Control Tower — Dynamic Excel Upload</title>
+    <meta name="viewport" content="width=1320, initial-scale=1" />
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+    <style>
+      :root {
+        --bg: #f5f6fa;
+        --panel: #fff;
+        --ink: #0f172a;
+        --muted: #64748b;
+        --line: #e5e7eb;
+        --brand: #1f3a5f;
+        --brand2: #2c5282;
+        --green: #22c55e;
+        --amber: #f59e0b;
+        --red: #ef4444;
+        --blue: #3b82f6;
+        --purple: #9333ea;
+        --green-bg: #dcfce7;
+        --amber-bg: #fef3c7;
+        --red-bg: #fee2e2;
+        --purple-bg: #f3e8ff;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto,
+          sans-serif;
+        font-size: 13px;
+        line-height: 1.45;
+      }
+      .app {
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 24px;
+      }
+      header.topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: linear-gradient(135deg, #1f3a5f 0%, #2c5282 100%);
+        color: #fff;
+        padding: 18px 24px;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+        margin-bottom: 14px;
+      }
+      header.topbar h1 {
+        margin: 0;
+        font-size: 22px;
+        letter-spacing: -0.2px;
+      }
+      header.topbar p {
+        margin: 4px 0 0;
+        opacity: 0.85;
+        font-size: 12px;
+      }
+      .meta {
+        text-align: right;
+        font-size: 12px;
+        opacity: 0.95;
+      }
+      .meta b {
+        font-size: 14px;
+      }
+      .upload-panel {
+        background: #fff;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 14px 16px;
+        margin-bottom: 14px;
+        display: grid;
+        grid-template-columns: 1.35fr 0.9fr;
+        gap: 12px;
+        align-items: center;
+      }
+      .upload-actions {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        justify-content: flex-end;
+        flex-wrap: wrap;
+      }
+      .upload-actions input[type="file"] {
+        max-width: 310px;
+      }
+      .btn {
+        background: var(--brand);
+        border: 1px solid var(--brand);
+        color: #fff;
+        border-radius: 8px;
+        padding: 7px 12px;
+        font-weight: 700;
+        font-size: 12px;
+        cursor: pointer;
+      }
+      .btn.secondary {
+        background: #fff;
+        color: var(--brand);
+        border-color: #cbd5e1;
+      }
+      .btn:disabled {
+        opacity: 0.45;
+        cursor: not-allowed;
+      }
+      .status-line {
+        font-size: 12px;
+        color: var(--muted);
+        margin-top: 4px;
+      }
+      .status-line.ok {
+        color: #166534;
+      }
+      .status-line.err {
+        color: #991b1b;
+      }
+      nav.tabs {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 16px;
+        flex-wrap: wrap;
+      }
+      nav.tabs a {
+        background: #fff;
+        padding: 10px 14px;
+        border-radius: 8px;
+        text-decoration: none;
+        color: var(--ink);
+        font-weight: 600;
+        font-size: 12.5px;
+        border: 1px solid var(--line);
+      }
+      nav.tabs a.active {
+        background: var(--brand);
+        color: #fff;
+        border-color: var(--brand);
+      }
+      section.page {
+        background: transparent;
+        margin-bottom: 28px;
+      }
+      section.page > h2 {
+        margin: 0 0 12px;
+        font-size: 18px;
+        color: var(--brand);
+        letter-spacing: -0.2px;
+      }
+      section.page > p.lead {
+        margin: 0 0 14px;
+        color: var(--muted);
+        font-size: 12.5px;
+        max-width: 900px;
+      }
+      .card {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 14px 16px;
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+      }
+      .grid {
+        display: grid;
+        gap: 12px;
+      }
+      .kpis {
+        grid-template-columns: repeat(7, 1fr);
+      }
+      .kpis-8 {
+        grid-template-columns: repeat(8, 1fr);
+      }
+      .kpis-7 {
+        grid-template-columns: repeat(7, 1fr);
+      }
+      .kpis-6 {
+        grid-template-columns: repeat(6, 1fr);
+      }
+      .kpis-5 {
+        grid-template-columns: repeat(5, 1fr);
+      }
+      .kpis-4 {
+        grid-template-columns: repeat(4, 1fr);
+      }
+      .kpi {
+        background: var(--panel);
+        border-radius: 10px;
+        padding: 12px 14px;
+        border: 1px solid var(--line);
+        position: relative;
+        overflow: hidden;
+      }
+      .kpi .label {
+        font-size: 11px;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      .kpi .value {
+        font-size: 22px;
+        font-weight: 700;
+        margin-top: 4px;
+      }
+      .kpi .sub {
+        font-size: 11px;
+        color: var(--muted);
+        margin-top: 2px;
+      }
+      .kpi.green {
+        border-left: 4px solid var(--green);
+      }
+      .kpi.amber {
+        border-left: 4px solid var(--amber);
+      }
+      .kpi.red {
+        border-left: 4px solid var(--red);
+      }
+      .kpi.brand {
+        border-left: 4px solid var(--brand);
+      }
+      .kpi.purple {
+        border-left: 4px solid var(--purple);
+      }
+      .chip {
+        display: inline-block;
+        padding: 2px 8px;
+        border-radius: 999px;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.4px;
+        white-space: nowrap;
+      }
+      .chip.green {
+        background: var(--green-bg);
+        color: #166534;
+      }
+      .chip.amber {
+        background: var(--amber-bg);
+        color: #92400e;
+      }
+      .chip.red {
+        background: var(--red-bg);
+        color: #991b1b;
+      }
+      .chip.purple {
+        background: var(--purple-bg);
+        color: #6b21a8;
+      }
+      .dot {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        margin-right: 6px;
+        vertical-align: middle;
+      }
+      .dot-green {
+        background: var(--green);
+      }
+      .dot-amber {
+        background: var(--amber);
+      }
+      .dot-red {
+        background: var(--red);
+      }
+      table.data {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 12px;
+      }
+      table.data th {
+        text-align: left;
+        background: #f1f5f9;
+        padding: 8px 10px;
+        border-bottom: 1px solid var(--line);
+        font-weight: 600;
+        color: var(--ink);
+        white-space: nowrap;
+        position: sticky;
+        top: 0;
+        z-index: 1;
+      }
+      table.data td {
+        padding: 7px 10px;
+        border-bottom: 1px solid #f1f5f9;
+      }
+      table.data tr:nth-child(even) td {
+        background: #fafbfc;
+      }
+      table.data .center {
+        text-align: center;
+      }
+      table.data .right {
+        text-align: right;
+        font-variant-numeric: tabular-nums;
+      }
+      .mono {
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        font-size: 11.5px;
+      }
+      .small {
+        font-size: 11.5px;
+      }
+      .muted {
+        color: var(--muted);
+      }
+      .row-red td {
+        background: #fff5f5 !important;
+      }
+      .row-amber td {
+        background: #fffaf0 !important;
+      }
+      .row-highlight td {
+        box-shadow: inset 3px 0 var(--purple);
+        background: #fbf7ff !important;
+      }
+      .section-title {
+        font-size: 13px;
+        font-weight: 700;
+        margin: 0 0 8px;
+        color: var(--brand);
+      }
+      .split-2 {
+        grid-template-columns: 1.4fr 1fr;
+      }
+      .split-3 {
+        grid-template-columns: 1fr 1fr 1fr;
+      }
+      .canvas-box {
+        position: relative;
+        height: 260px;
+      }
+      .canvas-box.tall {
+        height: 320px;
+      }
+      .canvas-box.short {
+        height: 200px;
+      }
+      .ai-box {
+        background: linear-gradient(135deg, #1e3a8a 0%, #1f3a5f 100%);
+        color: #fff;
+        border-radius: 10px;
+        padding: 16px 18px;
+      }
+      .ai-box .badge {
+        display: inline-block;
+        background: rgba(255, 255, 255, 0.18);
+        padding: 3px 10px;
+        border-radius: 999px;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.4px;
+        margin-bottom: 8px;
+      }
+      .ai-box h3 {
+        margin: 0 0 8px;
+        font-size: 15px;
+      }
+      .ai-box p {
+        margin: 0;
+        font-size: 12.5px;
+        line-height: 1.55;
+        opacity: 0.95;
+      }
+      .legend {
+        display: flex;
+        gap: 14px;
+        margin-top: 6px;
+        font-size: 11.5px;
+        color: var(--muted);
+        flex-wrap: wrap;
+      }
+      .legend span b {
+        color: var(--ink);
+      }
+      .gantt-toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+      .gantt-toolbar select,
+      .gantt-toolbar button {
+        background: #fff;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 5px 10px;
+        font-size: 12px;
+        color: var(--ink);
+        cursor: pointer;
+        font-family: inherit;
+      }
+      .gantt-toolbar label {
+        font-size: 11.5px;
+        color: var(--muted);
+        margin-right: 4px;
+      }
+      .gantt-wrap {
+        overflow: auto;
+        max-height: 680px;
+        border-radius: 10px;
+        background: #fbfcfe;
+        border: 1px solid var(--line);
+        padding: 6px;
+      }
+      .gantt-wrap::-webkit-scrollbar {
+        width: 10px;
+        height: 10px;
+      }
+      .gantt-wrap::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 5px;
+      }
+      .gantt-wrap svg {
+        display: block;
+      }
+      .gantt-tip {
+        position: fixed;
+        pointer-events: none;
+        background: #0f172a;
+        color: #fff;
+        border-radius: 8px;
+        padding: 8px 10px;
+        font-size: 11.5px;
+        line-height: 1.5;
+        box-shadow: 0 8px 24px rgba(15, 23, 42, 0.25);
+        z-index: 1000;
+        display: none;
+        max-width: 330px;
+      }
+      .gantt-tip b {
+        color: #fff;
+      }
+      .gantt-legend {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+        margin-top: 10px;
+        font-size: 11.5px;
+        color: var(--muted);
+        align-items: center;
+      }
+      .gantt-legend span {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .gantt-legend .swatch {
+        width: 14px;
+        height: 10px;
+        border-radius: 3px;
+        display: inline-block;
+      }
+      .gantt-legend .peak-sw {
+        background: rgba(34, 197, 94, 0.16);
+        border: 1px dashed rgba(34, 197, 94, 0.65);
+      }
+      .gantt-legend .eta-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #3b82f6;
+        border: 1px solid #0f172a;
+      }
+      .empty {
+        padding: 34px;
+        text-align: center;
+        color: var(--muted);
+        background: #fff;
+        border: 1px dashed #cbd5e1;
+        border-radius: 10px;
+      }
+      footer {
+        margin-top: 24px;
+        text-align: center;
+        color: var(--muted);
+        font-size: 11.5px;
+      }
+      @media (max-width: 1100px) {
+        .kpis,
+        .kpis-8,
+        .kpis-7,
+        .kpis-5 {
+          grid-template-columns: repeat(4, 1fr);
+        }
+        .kpis-6 {
+          grid-template-columns: repeat(3, 1fr);
+        }
+        .split-2,
+        .split-3,
+        .upload-panel {
+          grid-template-columns: 1fr;
+        }
+        .upload-actions {
+          justify-content: flex-start;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <header class="topbar">
+        <div class="title">
+          <h1>🛰️ Agentic AI Distribution Control Tower</h1>
+          <p>
+            MK Learn &amp; Play · Dynamic HTML dashboard reading
+            <b>DIS_Input_standard.xlsx</b> directly
+          </p>
+        </div>
+        <div class="meta">
+          <div>Active scenario</div>
+          <b id="activeScenarioLabel">Waiting for upload</b>
+          <div id="asOfLabel" style="margin-top: 4px">As of —</div>
+        </div>
+      </header>
+      <div class="upload-panel">
+        <div>
+          <b>Upload Excel input v4</b>
+          <div class="status-line">
+            This page ignores <code>Disruption_Simulation</code> and
+            <code>Cost_Comparison</code>. It recomputes shipment risk and cost
+            for the full <code>Pipeline_Source</code> after upload.
+          </div>
+          <div id="loadStatus" class="status-line">
+            Choose <code>DIS_Input_standard.xlsx</code> to render the
+            dashboard.
+          </div>
+        </div>
+        <div class="upload-actions">
+          <input id="excelFile" type="file" accept=".xlsx,.xls" /><button
+            id="loadBtn"
+            class="btn"
+          >
+            Load / Refresh</button
+          ><button id="clearBtn" class="btn secondary">Clear</button>
+        </div>
+      </div>
+      <nav class="tabs">
+        <a href="#exec" class="active">1 · Executive Control Tower</a
+        ><a href="#peak">2 · Shipment Peak Readiness</a
+        ><a href="#cost">3 · Cost Simulation</a
+        ><a href="#dc">4 · DC Inventory &amp; Buffer</a
+        ><a href="#dist">5 · Distributor SLA &amp; Backup</a>
+      </nav>
+      <section class="page" id="exec">
+        <h2>Page 1 — Executive DIS Control Tower</h2>
+        <p class="lead">
+          Monitors shipment peak-window readiness, DC inventory safety,
+          distributor SLA, and disruption cost under the active scenario.
+        </p>
+        <div id="execKpis" class="grid kpis-8"></div>
+        <div class="section-title" style="margin-top: 14px">
+          AI agent tóm tắt thay đổi
+        </div>
+        <div id="scenarioCompareKpis" class="grid kpis-7"></div>
+        <div class="grid split-2" style="margin-top: 14px">
+          <div class="card">
+            <div class="section-title">
+              Buffer to Peak Start — most at-risk shipments
+            </div>
+            <div class="canvas-box"><canvas id="bufferChart"></canvas></div>
+            <div class="legend">
+              <span><b>Negative</b> = arrives after peak start</span
+              ><span><b>Positive</b> = arrives before peak start</span>
+            </div>
+          </div>
+          <div class="card">
+            <div class="section-title">Status mix</div>
+            <div class="canvas-box"><canvas id="donut"></canvas></div>
+          </div>
+        </div>
+        <div class="grid split-2" style="margin-top: 14px">
+          <div class="card">
+            <div class="section-title">Status matrix · Market × DC</div>
+            <div id="statusMatrix"></div>
+          </div>
+          <div class="ai-box">
+            <span class="badge">🤖 AI Recommendation</span>
+            <h3>Port Congestion · agentic recommendation</h3>
+            <p id="aiText">
+              Upload the input file to generate the recommendation.
+            </p>
+          </div>
+        </div>
+        <div class="card" style="margin-top: 14px">
+          <div class="section-title">Top at-risk shipments</div>
+          <div id="atRiskTable" style="overflow: auto"></div>
+        </div>
+      </section>
+      <section class="page" id="peak">
+        <h2>Page 2 — Shipment Peak Readiness &amp; Disruption Gantt</h2>
+        <p class="lead">
+          Evaluates each load against its active peak window. Solid bar = base
+          transit, striped extension and +Nd label = shipment delay vs baseline
+          ETA caused by the disruption, blue dot = new ETA. Peak Delay is
+          tracked separately as days after the active peak window end. Priority
+          tracked loads are highlighted.
+        </p>
+        <div id="peakKpis" class="grid kpis-6"></div>
+        <div class="card" style="margin-top: 14px">
+          <div class="section-title">
+            Disruption Gantt · before-vs-after · full pipeline
+          </div>
+          <div class="gantt-toolbar">
+            <label>Sort</label
+            ><select id="ganttSort">
+              <option value="buffer_asc" selected>Buffer (lowest first)</option>
+              <option value="departure">Departure date</option>
+              <option value="market_dc">Market · DC</option>
+              <option value="status">Status (Red → Green)</option>
+              <option value="highlight">
+                Priority highlighted first
+              </option></select
+            ><label style="margin-left: 8px">Filter</label
+            ><select id="ganttMarket">
+              <option value="all" selected>All markets</option></select
+            ><select id="ganttStatus">
+              <option value="all" selected>All statuses</option>
+              <option value="GREEN">Green only</option>
+              <option value="AMBER">Amber only</option>
+              <option value="RED">Red only</option></select
+            ><select id="ganttBufCat">
+              <option value="all" selected>All buffer cats</option>
+              <option value="Green >=15d">Buffer ≥ 15d</option>
+              <option value="Amber 5-15d">Buffer 5–15d</option>
+              <option value="Red <5d/missed">Buffer &lt; 5d</option></select
+            ><select id="ganttHighlight">
+              <option value="all" selected>All loads</option>
+              <option value="highlight">Tracked only</option>
+              <option value="normal">Non-tracked only</option></select
+            ><span
+              style="margin-left: auto; font-size: 11px; color: var(--muted)"
+              id="ganttCount"
+            ></span>
+          </div>
+          <div class="gantt-wrap" id="ganttWrap"><svg id="ganttSvg"></svg></div>
+          <div class="gantt-legend">
+            <span
+              ><span class="swatch" style="background: #22c55e"></span>Buffer ≥
+              15d</span
+            ><span
+              ><span class="swatch" style="background: #f59e0b"></span>Buffer
+              5–15d</span
+            ><span
+              ><span class="swatch" style="background: #ef4444"></span>Buffer
+              &lt; 5d / missed</span
+            ><span
+              ><span
+                class="swatch"
+                style="
+                  background: repeating-linear-gradient(
+                    45deg,
+                    #9ca3af,
+                    #9ca3af 4px,
+                    #e5e7eb 4px,
+                    #e5e7eb 8px
+                  );
+                "
+              ></span
+              >Disruption delay (+days)</span
+            ><span
+              ><span class="swatch peak-sw"></span>SS1 / SS2 peak window</span
+            ><span><span class="eta-dot"></span>New ETA</span
+            ><span>⭐ Priority tracked load</span>
+          </div>
+        </div>
+        <div class="gantt-tip" id="ganttTip"></div>
+        <div class="card" style="margin-top: 14px">
+          <div class="section-title">Full shipment table</div>
+          <div
+            id="fullShipmentTable"
+            style="max-height: 520px; overflow: auto"
+          ></div>
+        </div>
+      </section>
+      <section class="page" id="cost">
+        <h2>Page 3 — Cost Simulation: Sea vs Air vs Split</h2>
+        <p class="lead">
+          Recomputes sea, full airfreight, and 40/60 split-shipment cost for
+          every pipeline row from the uploaded input.
+        </p>
+        <div id="costKpis" class="grid kpis-4"></div>
+        <div class="card" style="margin-top: 14px">
+          <div class="section-title">Decision summary · whole pipeline</div>
+          <div id="costSummary"></div>
+        </div>
+        <div class="grid split-2" style="margin-top: 14px">
+          <div class="card">
+            <div class="section-title">
+              Sea disrupted vs Full Air vs Split — top 10 by air cost
+            </div>
+            <div class="canvas-box tall">
+              <canvas id="costClustered"></canvas>
+            </div>
+          </div>
+          <div class="card">
+            <div class="section-title">
+              Cost waterfall · Base Sea → Disrupted Sea → Air premium
+            </div>
+            <div class="canvas-box tall"><canvas id="waterfall"></canvas></div>
+          </div>
+        </div>
+        <div class="card" style="margin-top: 14px">
+          <div class="section-title">Recommendation by order</div>
+          <div id="costTable" style="overflow: auto"></div>
+        </div>
+      </section>
+      <section class="page" id="dc">
+        <h2>Page 4 — DC Inventory &amp; Safety Buffer</h2>
+        <p class="lead">
+          Tracks projected weekly inventory coverage at each DC against the
+          safety buffer threshold from Cost_Assumptions, defaulting to 1 week.
+        </p>
+        <div id="dcKpis" class="grid kpis-5"></div>
+        <div class="grid split-2" style="margin-top: 14px">
+          <div class="card">
+            <div class="section-title">Coverage weeks by DC</div>
+            <div class="canvas-box tall"><canvas id="dcChart"></canvas></div>
+            <div class="legend">
+              <span>Threshold = <b id="safetyLabel">1.0 week</b></span>
+            </div>
+          </div>
+          <div class="card">
+            <div class="section-title">US DC West vs East - Inbound Units</div>
+            <div class="canvas-box tall"><canvas id="usDcPie"></canvas></div>
+          </div>
+        </div>
+        <div class="card" style="margin-top: 14px">
+          <div class="section-title">DC inventory snapshot</div>
+          <div id="dcTable"></div>
+        </div>
+      </section>
+      <section class="page" id="dist">
+        <h2>Page 5 — Distributor SLA &amp; Backup Plan</h2>
+        <p class="lead">
+          Monitors rolling 4-week distributor SLA. SLA below the threshold from
+          Cost_Assumptions, defaulting to 95%, triggers backup plan.
+        </p>
+        <div id="distKpis" class="grid kpis-4"></div>
+        <div class="grid split-2" style="margin-top: 14px">
+          <div class="card">
+            <div class="section-title">Weekly SLA trend by distributor</div>
+            <div class="canvas-box tall"><canvas id="slaLine"></canvas></div>
+          </div>
+          <div class="card">
+            <div class="section-title">Rolling 4W SLA</div>
+            <div class="canvas-box tall"><canvas id="slaBar"></canvas></div>
+          </div>
+        </div>
+        <div class="card" style="margin-top: 14px">
+          <div class="section-title">Distributor monitoring</div>
+          <div id="distTable"></div>
+        </div>
+        <div class="card" style="margin-top: 14px">
+          <div class="section-title">Primary → Backup distributor plan</div>
+          <div id="backupTable"></div>
+        </div>
+      </section>
+      <footer>
+        Data source: uploaded DIS_Input_standard.xlsx · Sheets used:
+        Pipeline_Source, Scenario_Config, Priority_Orders, DC_Inventory_Input,
+        Distributor_Input, Freight_Rate_Master, Lane_LeadTime_Master,
+        Peak_Window_Master, Backup_Distributor_Plan.
+      </footer>
+    </div>
+    <script>
+      let model = null;
+      let charts = {};
+      const C = {
+        GREEN: "#22C55E",
+        AMBER: "#F59E0B",
+        RED: "#EF4444",
+        GREY: "#9CA3AF",
+        BRAND: "#1F3A5F",
+        BLUE: "#3B82F6",
+        PURPLE: "#9333EA",
+      };
+      function el(id) {
+        return document.getElementById(id);
+      }
+      function esc(v) {
+        return String(v ?? "").replace(
+          /[&<>"']/g,
+          (s) =>
+            ({
+              "&": "&amp;",
+              "<": "&lt;",
+              ">": "&gt;",
+              '"': "&quot;",
+              "'": "&#39;",
+            })[s],
+        );
+      }
+      function fmtNum(n, d = 0) {
+        n = Number(n);
+        return Number.isFinite(n)
+          ? n.toLocaleString(undefined, {
+              maximumFractionDigits: d,
+              minimumFractionDigits: d,
+            })
+          : "—";
+      }
+      function fmtMoney(n) {
+        n = Number(n);
+        return Number.isFinite(n)
+          ? "$" + n.toLocaleString(undefined, { maximumFractionDigits: 0 })
+          : "—";
+      }
+      function fmtPct(n) {
+        n = Number(n);
+        if (!Number.isFinite(n)) return "—";
+        if (Math.abs(n) <= 1.5) n *= 100;
+        return n.toFixed(2) + "%";
+      }
+      function norm(s) {
+        return String(s ?? "")
+          .toLowerCase()
+          .replace(/[\s_\-\/()$%]+/g, "")
+          .replace(/[^a-z0-9]/g, "");
+      }
+      function cleanName(s) {
+        return String(s ?? "").trim();
+      }
+      function isBlank(v) {
+        return v == null || String(v).trim() === "";
+      }
+      function toNum(v, def = null) {
+        if (v == null || v === "") return def;
+        if (typeof v === "number") return Number.isFinite(v) ? v : def;
+        let s = String(v).replace(/[$,%\s,]/g, "");
+        let n = Number(s);
+        return Number.isFinite(n) ? n : def;
+      }
+      function toBool(v) {
+        if (typeof v === "boolean") return v;
+        if (typeof v === "number") return v !== 0;
+        let s = String(v ?? "")
+          .trim()
+          .toLowerCase();
+        return ["true", "yes", "y", "1", "active"].includes(s);
+      }
+      function pctDecimal(v, def) {
+        let n = toNum(v, def);
+        if (n == null) return def;
+        if (Math.abs(n) > 1.5) n = n / 100;
+        return n;
+      }
+      function excelSerialToDate(n) {
+        let d = new Date(Date.UTC(1899, 11, 30));
+        d.setUTCDate(d.getUTCDate() + Math.floor(n));
+        return d;
+      }
+      function parseDate(v) {
+        if (v instanceof Date && !isNaN(v))
+          return new Date(Date.UTC(v.getFullYear(), v.getMonth(), v.getDate()));
+        if (typeof v === "number" && Number.isFinite(v))
+          return excelSerialToDate(v);
+        if (typeof v === "string") {
+          let s = v.trim();
+          if (!s) return null;
+          let d = new Date(s);
+          if (!isNaN(d))
+            return new Date(
+              Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()),
+            );
+          let m = s.match(/^(\d{1,2})[\/-](\d{1,2})[\/-](\d{2,4})$/);
+          if (m) {
+            let a = +m[1],
+              b = +m[2],
+              y = +m[3];
+            if (y < 100) y += 2000;
+            return new Date(Date.UTC(y, b - 1, a));
+          }
+        }
+        return null;
+      }
+      function dateISO(d) {
+        return d && !isNaN(d) ? d.toISOString().slice(0, 10) : "";
+      }
+      function addDays(d, n) {
+        let x = new Date(d.getTime());
+        x.setUTCDate(x.getUTCDate() + Number(n || 0));
+        return x;
+      }
+      function diffDays(a, b) {
+        return Math.round((a - b) / 86400000);
+      }
+      function loadTypeNorm(v) {
+        let s = String(v ?? "").toUpperCase();
+        if (s.includes("LCL")) return "LCL";
+        if (s.includes("20")) return "20";
+        if (s.includes("40")) return "40";
+        return s.trim();
+      }
+      function statusClass(s) {
+        s = String(s || "").toUpperCase();
+        return s === "RED" ? "red" : s === "AMBER" ? "amber" : "green";
+      }
+      function bufferColor(cat) {
+        return cat === "Green >=15d"
+          ? C.GREEN
+          : cat === "Amber 5-15d"
+            ? C.AMBER
+            : C.RED;
+      }
+      function statusColor(s) {
+        return String(s).toUpperCase() === "RED"
+          ? C.RED
+          : String(s).toUpperCase() === "AMBER"
+            ? C.AMBER
+            : C.GREEN;
+      }
+      function rowClass(r) {
+        return (
+          (r.isHighlight ? "row-highlight " : "") +
+          (r.Status === "RED"
+            ? "row-red"
+            : r.Status === "AMBER"
+              ? "row-amber"
+              : "")
+        );
+      }
+      function statusChip(s) {
+        return `<span class="chip ${statusClass(s)}">${esc(s)}</span>`;
+      }
+      function highlightChip(v) {
+        return v ? `<span class="chip purple">⭐ Tracked</span>` : "";
+      }
+      function getBy(row, names, def = "") {
+        let map =
+          row.__norm ||
+          (row.__norm = Object.fromEntries(
+            Object.keys(row).map((k) => [norm(k), k]),
+          ));
+        for (const nm of names) {
+          let k = map[norm(nm)];
+          if (k !== undefined && !isBlank(row[k])) return row[k];
+        }
+        for (const nm of names) {
+          let nn = norm(nm);
+          let k = Object.keys(map).find(
+            (x) => x.includes(nn) || nn.includes(x),
+          );
+          if (k && k.length > 2 && !isBlank(row[map[k]])) return row[map[k]];
+        }
+        return def;
+      }
+      function sheetRows(wb, name) {
+        let key = wb.SheetNames.find((s) => norm(s) === norm(name));
+        if (!key) return [];
+        let raw = XLSX.utils.sheet_to_json(wb.Sheets[key], {
+          defval: null,
+          raw: true,
+        });
+        return raw.map((r) => {
+          let o = {};
+          for (const [k, v] of Object.entries(r)) o[cleanName(k)] = v;
+          return o;
+        });
+      }
+      function firstSheetRows(wb, names) {
+        for (const n of names) {
+          let r = sheetRows(wb, n);
+          if (r.length) return r;
+        }
+        return [];
+      }
+      function buildModel(wb) {
+        const pipeRaw = firstSheetRows(wb, [
+          "Pipeline_Source",
+          "Pipeline Master Table",
+          "SOTA_Pipeline",
+        ]);
+        const scenRaw = sheetRows(wb, "Scenario_Config");
+        const prioRaw = sheetRows(wb, "Priority_Orders");
+        const dcRaw = sheetRows(wb, "DC_Inventory_Input");
+        const distRaw = sheetRows(wb, "Distributor_Input");
+        const rateRaw = sheetRows(wb, "Freight_Rate_Master");
+        const ltRaw = sheetRows(wb, "Lane_LeadTime_Master");
+        const peakRaw = sheetRows(wb, "Peak_Window_Master");
+        const costAssRaw = sheetRows(wb, "Cost_Assumptions");
+        const backupRaw = sheetRows(wb, "Backup_Distributor_Plan");
+        const activeScenario = scenRaw.find((r) =>
+          toBool(getBy(r, ["Active"], false)),
+        );
+        const active =
+          activeScenario ||
+          scenRaw.find(
+            (r) => !isBlank(getBy(r, ["Scenario ID", "Scenario"])),
+          ) ||
+          {};
+        const scenario = {
+          active: !!activeScenario,
+          id: getBy(active, ["Scenario ID"], "S1"),
+          name: getBy(active, ["Scenario Name", "Scenario"], "Port Congestion"),
+          usInc: toNum(
+            getBy(active, [
+              "US-E LT Increase",
+              "US E LT Increase",
+              "US-E Lead Time Increase",
+            ]),
+            15,
+          ),
+          ukInc: toNum(
+            getBy(active, ["UK LT Increase", "UK Lead Time Increase"]),
+            15,
+          ),
+          costInc: pctDecimal(
+            getBy(active, [
+              "Container Cost Increase",
+              "Container Cost Increase %",
+              "Cost Increase",
+            ]),
+            0.2,
+          ),
+          airRate: toNum(
+            getBy(active, [
+              "Air Cost per kg",
+              "Air Cost/kg",
+              "Air Freight Rate",
+              "Air Cost",
+            ]),
+            4.5,
+          ),
+          weight: toNum(
+            getBy(active, [
+              "Product Weight kg",
+              "Product A Weight/kg",
+              "Product Weight",
+              "Weight kg",
+            ]),
+            1.2,
+          ),
+        };
+        const assumptions = readAssumptions(costAssRaw);
+        scenario.urgentShare = assumptions.urgentShare ?? 0.4;
+        scenario.safetyBuffer = assumptions.safetyBuffer ?? 1;
+        scenario.slaThreshold = assumptions.slaThreshold ?? 0.95;
+        const rates = readRates(rateRaw);
+        const ltMap = readLT(ltRaw);
+        const peakMap = readPeaks(peakRaw);
+        const priority = readPriority(prioRaw);
+        let rows = pipeRaw
+          .filter(
+            (r) =>
+              !isBlank(
+                getBy(r, [
+                  "Container ID",
+                  "ContainerID",
+                  "Batch / Load",
+                  "Batch Load",
+                  "Load ID",
+                ]),
+              ) &&
+              !isBlank(getBy(r, ["SKU", "Product"])),
+          )
+          .map((r, i) =>
+            computeShipment(r, i, scenario, ltMap, peakMap, priority),
+          );
+        const inboundByDC = summarizeInboundByDC(rows);
+        const costs = rows.map((r) => computeCost(r, scenario, rates));
+        const dc = readDC(dcRaw, scenario, inboundByDC);
+        const dist = readDist(distRaw, scenario);
+        const backup = readBackup(backupRaw);
+        const statusCounts = countBy(rows, "Status");
+        const bufCounts = countBy(rows, "BufferCat");
+        const scenarioCompare = buildScenarioComparison(rows, costs, scenario);
+        const matrix = buildMatrix(rows);
+        return {
+          scenario,
+          rows,
+          costs,
+          dc,
+          dist,
+          backup,
+          statusCounts,
+          bufCounts,
+          scenarioCompare,
+          matrix,
+          inboundByDC,
+          priorityCount: rows.filter((r) => r.isHighlight).length,
+          fileRows: pipeRaw.length,
+        };
+      }
+      function summarizeInboundByDC(rows) {
+        let m = new Map();
+        for (const r of rows) {
+          if (!r.DC) continue;
+          let x = m.get(r.DC) || { units: 0, cbm: 0 };
+          x.units += r.Qty || 0;
+          x.cbm += r.ProductCBM || 0;
+          m.set(r.DC, x);
+        }
+        return m;
+      }
+      function readAssumptions(raw) {
+        let out = {};
+        for (const r of raw) {
+          let id = String(
+            getBy(r, ["Assumption ID", "ID", "Code", "Item"], ""),
+          ).toUpperCase();
+          let label = String(
+            getBy(r, ["Assumption", "Name", "Metric", "Parameter"], ""),
+          ).toLowerCase();
+          let val = getBy(r, ["Value", "Assumption Value", "Setting"], null);
+          if (id.includes("A04") || label.includes("urgent"))
+            out.urgentShare = pctDecimal(val, 0.4);
+          if (id.includes("A06") || label.includes("safety"))
+            out.safetyBuffer = toNum(val, 1);
+          if (id.includes("A07") || label.includes("sla"))
+            out.slaThreshold = pctDecimal(val, 0.95);
+        }
+        return out;
+      }
+      function readRates(raw) {
+        let m = new Map();
+        for (const r of raw) {
+          let market = String(getBy(r, ["Market"], "")).trim();
+          let lt = loadTypeNorm(
+            getBy(r, ["Load Type", "Container Type", "Mode"], ""),
+          );
+          let rate = toNum(
+            getBy(
+              r,
+              [
+                "Base Sea Rate",
+                "Rate",
+                "Freight Rate",
+                "Ocean Rate",
+                "USD Rate",
+                "Cost",
+              ],
+              null,
+            ),
+            null,
+          );
+          if (market && lt && rate != null) m.set(market + "|" + lt, rate);
+        }
+        const defaults = [
+          ["US", "40", 5200],
+          ["US", "20", 3000],
+          ["US", "LCL", 200],
+          ["UK", "40", 4200],
+          ["UK", "20", 2500],
+          ["UK", "LCL", 70],
+          ["AU", "40", 2000],
+          ["AU", "20", 1100],
+          ["AU", "LCL", 35],
+        ];
+        for (const [a, b, c] of defaults)
+          if (!m.has(a + "|" + b)) m.set(a + "|" + b, c);
+        return m;
+      }
+      function readLT(raw) {
+        let m = new Map();
+        for (const r of raw) {
+          let market = String(getBy(r, ["Market"], "")).trim(),
+            dc = String(getBy(r, ["DC", "Destination DC"], "")).trim(),
+            lt = loadTypeNorm(getBy(r, ["Load Type"], "")).trim();
+          let base = toNum(
+            getBy(r, ["Base LT", "Ocean Lead Time", "Lead Time"], null),
+            null,
+          );
+          if (market && dc && lt && base != null)
+            m.set(`${market}|${dc}|${lt}`, base);
+        }
+        return m;
+      }
+      function readPeaks(raw) {
+        let m = new Map();
+        for (const r of raw) {
+          let market = String(getBy(r, ["Market"], "")).trim();
+          if (!market) continue;
+          m.set(market, {
+            s1s: parseDate(getBy(r, ["SS1 Start", "SS_1_start", "SS 1 Start"])),
+            s1e: parseDate(getBy(r, ["SS1 End", "SS_1_end", "SS 1 End"])),
+            s2s: parseDate(getBy(r, ["SS2 Start", "SS_2_start", "SS 2 Start"])),
+            s2e: parseDate(getBy(r, ["SS2 End", "SS_2_end", "SS 2 End"])),
+          });
+        }
+        return m;
+      }
+      function readPriority(raw) {
+        let rows = raw.filter(
+          (r) =>
+            !isBlank(
+              getBy(r, [
+                "Batch / Load keep track",
+                "Container ID",
+                "ContainerID",
+                "Batch / Load",
+                "Batch Load",
+                "Load ID",
+              ]),
+            ),
+        );
+        let byBatch = new Map(),
+          byLine = new Map();
+        for (const r of rows) {
+          let b = String(
+            getBy(
+              r,
+              [
+                "Batch / Load keep track",
+                "Container ID",
+                "ContainerID",
+                "Batch / Load",
+                "Batch Load",
+                "Load ID",
+              ],
+              "",
+            ),
+          ).trim();
+          let sku = String(getBy(r, ["SKU", "Product"], "")).trim();
+          let info = {
+            orderID: String(getBy(r, ["Order ID", "OrderID"], "")).trim(),
+            priority:
+              String(getBy(r, ["Priority", "Priority Level"], "High")).trim() ||
+              "High",
+            qty: toNum(
+              getBy(r, ["Priority Qty", "Required Qty", "Qty"], null),
+              null,
+            ),
+            group: String(
+              getBy(r, ["Highlight Group", "Group"], "Priority"),
+            ).trim(),
+            note: String(getBy(r, ["Highlight Note", "Note"], "")).trim(),
+          };
+          if (b) {
+            byBatch.set(b, info);
+            if (sku) byLine.set(b + "|" + sku, info);
+          }
+        }
+        return { byBatch, byLine };
+      }
+      function evaluatePeakArrival(arrival, s1s, s1e, s2s, s2e) {
+        let peakLabel = s1e && arrival && arrival <= s1e ? "SS1" : "SS2";
+        let peakStart = peakLabel === "SS1" ? s1s : s2s;
+        let peakEnd = peakLabel === "SS1" ? s1e : s2e;
+        let buffer = peakStart && arrival ? diffDays(peakStart, arrival) : null;
+        let delay =
+          peakEnd && arrival ? Math.max(0, diffDays(arrival, peakEnd)) : 0;
+        let status =
+          arrival && peakStart && arrival <= peakStart
+            ? "GREEN"
+            : arrival && peakEnd && arrival <= peakEnd
+              ? "AMBER"
+              : "RED";
+        return { peakLabel, peakStart, peakEnd, buffer, delay, status };
+      }
+      function computeShipment(r, i, scenario, ltMap, peakMap, priority) {
+        let batch = String(
+          getBy(
+            r,
+            ["Container ID", "ContainerID", "Batch / Load", "Batch Load", "Load ID"],
+            "",
+          ),
+        ).trim();
+        let sku = String(getBy(r, ["SKU", "Product"], "")).trim();
+        let qty = toNum(getBy(r, ["Qty", "Quantity", "Units"], 0), 0);
+        let market = String(getBy(r, ["Market"], "")).trim();
+        let dc = String(
+          getBy(r, ["DC", "Destination DC", "Destination"], ""),
+        ).trim();
+        let loadType = loadTypeNorm(
+          getBy(r, ["Load Type", "Container Type", "Mode"], ""),
+        );
+        let dep = parseDate(getBy(r, ["Departure Date", "Departure", "ETD"]));
+        let baseLT = toNum(
+          getBy(r, ["Base LT", "Ocean Lead Time", "Lead Time"], null),
+          null,
+        );
+        let mappedLT = ltMap.get(`${market}|${dc}|${loadType}`);
+        if (mappedLT != null) baseLT = mappedLT;
+        if (baseLT == null) baseLT = 0;
+        let baseETA = parseDate(
+          getBy(r, ["Base ETA", "Expected Arrival", "ETA"]),
+        );
+        if (!baseETA && dep) baseETA = addDays(dep, baseLT);
+        let pk = peakMap.get(market) || {};
+        let s1s =
+          parseDate(getBy(r, ["SS1 Start", "SS_1_start", "SS 1 Start"])) ||
+          pk.s1s;
+        let s1e =
+          parseDate(getBy(r, ["SS1 End", "SS_1_end", "SS 1 End"])) || pk.s1e;
+        let s2s =
+          parseDate(getBy(r, ["SS2 Start", "SS_2_start", "SS 2 Start"])) ||
+          pk.s2s;
+        let s2e =
+          parseDate(getBy(r, ["SS2 End", "SS_2_end", "SS 2 End"])) || pk.s2e;
+        let inc =
+          dc === "DC-US-E"
+            ? scenario.usInc
+            : dc === "DC-UK"
+              ? scenario.ukInc
+              : 0;
+        let newLT = baseLT + inc;
+        let newETA = dep ? addDays(dep, newLT) : baseETA;
+        let disruptionDelay =
+          baseETA && newETA
+            ? Math.max(0, diffDays(newETA, baseETA))
+            : Math.max(0, inc);
+        let baseEval = evaluatePeakArrival(baseETA, s1s, s1e, s2s, s2e);
+        let afterEval = evaluatePeakArrival(newETA, s1s, s1e, s2s, s2e);
+        let peakLabel = afterEval.peakLabel;
+        let peakStart = afterEval.peakStart;
+        let peakEnd = afterEval.peakEnd;
+        let buffer = afterEval.buffer;
+        let delay = afterEval.delay;
+        let status = afterEval.status;
+        let hl =
+          priority.byLine.get(batch + "|" + sku) || priority.byBatch.get(batch);
+        let isHighlight = !!hl;
+        let orderID = hl?.orderID || `AUTO-${String(i + 1).padStart(3, "0")}`;
+        let priorityLevel = hl?.priority || "Standard";
+        let action =
+          status === "RED" && priorityLevel.toLowerCase() === "high"
+            ? "Evaluate Air or Split Shipment"
+            : status === "RED"
+              ? "Hold / reallocate to next peak window"
+              : status === "AMBER"
+                ? "Monitor — Keep Sea with contingency"
+                : "Keep Sea (on plan)";
+        let bufferCat =
+          status === "RED" || buffer < 5
+            ? "Red <5d/missed"
+            : buffer < 15
+              ? "Amber 5-15d"
+              : "Green >=15d";
+        return {
+          OrderID: orderID,
+          BatchLoad: batch,
+          SKU: sku,
+          Qty: qty,
+          Market: market,
+          DC: dc,
+          Priority: priorityLevel,
+          isHighlight,
+          HighlightGroup: hl?.group || "Normal",
+          HighlightNote: hl?.note || "",
+          LoadType: loadType,
+          ProductCBM: toNum(getBy(r, ["Product CBM", "CBM"], 0), 0),
+          LoadUsedCBM: toNum(
+            getBy(r, ["Load Used CBM", "Used CBM"], null),
+            null,
+          ),
+          LoadSlackCBM: toNum(
+            getBy(r, ["Load Slack CBM", "Slack CBM"], null),
+            null,
+          ),
+          Departure: dep,
+          BaseLT: baseLT,
+          BaseETA: baseETA,
+          LTIncrease: inc,
+          NewLT: newLT,
+          NewETA: newETA,
+          SS1Start: s1s,
+          SS1End: s1e,
+          SS2Start: s2s,
+          SS2End: s2e,
+          PeakLabel: peakLabel,
+          PeakStart: peakStart,
+          PeakEnd: peakEnd,
+          BufferDays: buffer,
+          BufferCat: bufferCat,
+          DisruptionDelayDays: disruptionDelay,
+          PeakDelayDays: delay,
+          BaseStatus: baseEval.status,
+          BaseBufferDays: baseEval.buffer,
+          BasePeakDelayDays: baseEval.delay,
+          Status: status,
+          Action: action,
+        };
+      }
+      function computeCost(r, scenario, rates) {
+        let rate = rates.get(r.Market + "|" + r.LoadType) || 0;
+        let baseSea =
+          r.LoadType === "LCL"
+            ? r.ProductCBM * rate
+            : r.LoadUsedCBM && r.LoadUsedCBM > 0
+              ? rate * (r.ProductCBM / r.LoadUsedCBM)
+              : rate;
+        let seaDis =
+          r.DC === "DC-US-E" || r.DC === "DC-UK"
+            ? baseSea * (1 + scenario.costInc)
+            : baseSea;
+        let fullAir = r.Qty * scenario.weight * scenario.airRate;
+        let urgent = Math.round(r.Qty * scenario.urgentShare);
+        let rem = r.Qty - urgent;
+        let splitAir = urgent * scenario.weight * scenario.airRate;
+        let splitSea = seaDis * (1 - scenario.urgentShare);
+        let splitTotal = splitAir + splitSea;
+        let rec =
+          r.Status === "GREEN"
+            ? "Keep Sea"
+            : r.Status === "AMBER"
+              ? "Keep Sea + Contingency"
+              : splitTotal < fullAir
+                ? "Split Shipment"
+                : "Full Air";
+        return {
+          ...r,
+          Rate: rate,
+          BaseSeaCost: baseSea,
+          SeaCostAfterDisruption: seaDis,
+          FullAirCost: fullAir,
+          UrgentQty: urgent,
+          RemainingQty: rem,
+          SplitAirCost: splitAir,
+          SplitRemainingSeaCost: splitSea,
+          SplitTotalCost: splitTotal,
+          Recommendation: rec,
+        };
+      }
+      function readDC(raw, scenario, inboundByDC) {
+        return raw
+          .map((r) => {
+            let dc = String(getBy(r, ["DC"], "")).trim();
+            let inbound = inboundByDC.get(dc);
+            return {
+              DC: dc,
+              Market: String(getBy(r, ["Market"], "")).trim(),
+              StorageCapacityCBM: toNum(
+                getBy(r, ["Storage Capacity CBM", "Capacity CBM"], null),
+                null,
+              ),
+              HandlingRate: toNum(
+                getBy(
+                  r,
+                  [
+                    "Handling Rate USD/CBM",
+                    "Handling Rate",
+                    "Handling Rate USD / CBM",
+                  ],
+                  null,
+                ),
+                null,
+              ),
+              PlannedInboundUnits: inbound
+                ? inbound.units
+                : toNum(getBy(r, ["Planned Inbound Units"], null), null),
+              PlannedInboundCBM: inbound
+                ? inbound.cbm
+                : toNum(getBy(r, ["Planned Inbound CBM"], null), null),
+              ProjectedInventoryUnits: toNum(
+                getBy(r, ["Projected Inventory Units"], null),
+                null,
+              ),
+              InventoryCoverageWeeks: toNum(
+                getBy(r, ["Inventory Coverage Weeks", "Coverage Weeks"], null),
+                null,
+              ),
+              Status: String(getBy(r, ["Status"], "")),
+              AlertNote: String(getBy(r, ["Alert Note", "Alert"], "")),
+            };
+          })
+          .filter((r) => r.DC && r.DC.startsWith("DC-"))
+          .map((r) => {
+            if (!r.Status)
+              r.Status =
+                r.InventoryCoverageWeeks < scenario.safetyBuffer
+                  ? "RED"
+                  : "GREEN";
+            return r;
+          });
+      }
+      function readDist(raw, scenario) {
+        return raw
+          .map((r) => ({
+            Market: String(getBy(r, ["Market"], "")).trim(),
+            SelectedDistributor: String(
+              getBy(r, ["Selected Distributor", "Distributor"], ""),
+            ).trim(),
+            BackupDistributor: String(
+              getBy(r, ["Backup Distributor", "Backup"], ""),
+            ).trim(),
+            CapacityCBM: toNum(getBy(r, ["Capacity CBM"], null), null),
+            PlannedCBM: toNum(
+              getBy(
+                r,
+                [
+                  "Planned CBM",
+                  "Planned CBM from SOTA",
+                  "Planned CBM from pipeline",
+                ],
+                null,
+              ),
+              null,
+            ),
+            CapacityGapCBM: toNum(getBy(r, ["Capacity Gap CBM"], null), null),
+            ChannelFit: String(
+              getBy(r, ["Channel Fit", "Channel / Strategic Fit"], ""),
+            ),
+            W1: pctDecimal(getBy(r, ["Week 1 SLA", "W1 SLA"], null), null),
+            W2: pctDecimal(getBy(r, ["Week 2 SLA", "W2 SLA"], null), null),
+            W3: pctDecimal(getBy(r, ["Week 3 SLA", "W3 SLA"], null), null),
+            W4: pctDecimal(getBy(r, ["Week 4 SLA", "W4 SLA"], null), null),
+            Rolling: pctDecimal(
+              getBy(r, ["Rolling 4W SLA", "Rolling SLA"], null),
+              null,
+            ),
+            SLAStatus: String(getBy(r, ["SLA Status", "Status"], "")),
+            ContingencyAction: String(
+              getBy(r, ["Contingency Action", "Action"], ""),
+            ),
+          }))
+          .filter((r) => ["US", "UK", "AU"].includes(r.Market))
+          .map((r) => {
+            if (r.Rolling == null) {
+              let arr = [r.W1, r.W2, r.W3, r.W4].filter((x) => x != null);
+              r.Rolling = arr.length
+                ? arr.reduce((a, b) => a + b, 0) / arr.length
+                : null;
+            }
+            if (!r.SLAStatus && r.Rolling != null)
+              r.SLAStatus = r.Rolling < scenario.slaThreshold ? "RED" : "GREEN";
+            return r;
+          });
+      }
+      function readBackup(raw) {
+        return raw
+          .map((r) => ({
+            Market: String(getBy(r, ["Market"], "")).trim(),
+            Primary: String(getBy(r, ["Primary Distributor", "Primary"], "")),
+            Backup: String(getBy(r, ["Backup Distributor", "Backup"], "")),
+            Trigger: String(getBy(r, ["Trigger"], "")),
+            SwitchingCost: String(
+              getBy(r, ["Switching Cost Type", "Switching Cost"], ""),
+            ),
+            Impact: String(getBy(r, ["Operational Impact", "Impact"], "")),
+          }))
+          .filter((r) => ["US", "UK", "AU"].includes(r.Market));
+      }
+      function countBy(rows, key) {
+        let o = {};
+        for (const r of rows) o[r[key]] = (o[r[key]] || 0) + 1;
+        return o;
+      }
+      function buildMatrix(rows) {
+        let m = {};
+        for (const r of rows) {
+          let k = r.Market + "|" + r.DC;
+          if (!m[k])
+            m[k] = {
+              Market: r.Market,
+              DC: r.DC,
+              GREEN: 0,
+              AMBER: 0,
+              RED: 0,
+              total: 0,
+            };
+          m[k][r.Status] = (m[k][r.Status] || 0) + 1;
+          m[k].total++;
+        }
+        return Object.values(m).sort((a, b) =>
+          (a.Market + a.DC).localeCompare(b.Market + b.DC),
+        );
+      }
+      function renderAll() {
+        if (!model) return;
+        renderHeader();
+        renderKpis();
+        renderCharts();
+        renderTables();
+        renderGantt();
+      }
+      function renderHeader() {
+        el("activeScenarioLabel").textContent =
+          `${model.scenario.name} (${model.scenario.id})`;
+        el("asOfLabel").textContent =
+          `As of ${new Date().toISOString().slice(0, 10)}`;
+        el("safetyLabel").textContent =
+          `${fmtNum(model.scenario.safetyBuffer, 1)} week`;
+      }
+      function kpi(label, value, sub, cls = "brand") {
+        return `<div class="kpi ${cls}"><div class="label">${esc(label)}</div><div class="value">${esc(value)}</div>${sub ? `<div class="sub">${esc(sub)}</div>` : ""}</div>`;
+      }
+      function renderKpis() {
+        let r = model.rows,
+          c = model.costs,
+          dc = model.dc,
+          dist = model.dist;
+        let total = r.length,
+          red = model.statusCounts.RED || 0,
+          amber = model.statusCounts.AMBER || 0,
+          green = model.statusCounts.GREEN || 0,
+          atRisk = red + amber;
+        let maxDelay = Math.max(0, ...r.map((x) => x.PeakDelayDays || 0));
+        let maxShipDelay = Math.max(
+          0,
+          ...r.map((x) => x.DisruptionDelayDays || 0),
+        );
+        let delayedRows = r.filter(
+          (x) => (x.DisruptionDelayDays || 0) > 0,
+        ).length;
+        let dcRed = dc.filter((x) => x.Status === "RED").length;
+        let slaRed = dist.filter((x) => x.SLAStatus === "RED").length;
+        let sums = sumCosts(c);
+        el("execKpis").innerHTML = [
+          kpi("Total Shipments", total, "Pipeline_Source rows", "brand"),
+          kpi(
+            "At-Risk Shipments",
+            atRisk,
+            `${amber} amber · ${red} red`,
+            atRisk ? "amber" : "green",
+          ),
+          kpi(
+            "Max Shipment Delay",
+            `${maxShipDelay} d`,
+            "New ETA vs Base ETA",
+            maxShipDelay ? "amber" : "green",
+          ),
+          kpi(
+            "DCs Below Buffer",
+            `${dcRed} / ${dc.length}`,
+            dc
+              .filter((x) => x.Status === "RED")
+              .map((x) => x.DC)
+              .join(", ") || "None",
+            dcRed ? "red" : "green",
+          ),
+          kpi(
+            "Distributor SLA Risk",
+            `${slaRed} / ${dist.length}`,
+            dist
+              .filter((x) => x.SLAStatus === "RED")
+              .map((x) => x.SelectedDistributor)
+              .join(", ") || "None",
+            slaRed ? "red" : "green",
+          ),
+          kpi(
+            "Incremental Sea Cost",
+            fmtMoney(sums.uplift),
+            "+ container surcharge",
+            "amber",
+          ),
+          kpi(
+            "Split Saving vs Full Air",
+            fmtMoney(sums.air - sums.split),
+            "Split vs full air",
+            "green",
+          ),
+          kpi(
+            "Tracked Loads",
+            model.priorityCount,
+            "From Priority_Orders",
+            "purple",
+          ),
+        ].join("");
+        let cmp = model.scenarioCompare;
+        let signed = (n, suffix = "") =>
+          `${n > 0 ? "+" : ""}${fmtNum(n)}${suffix}`;
+        let cmpSub = (before, after) =>
+          cmp.active
+            ? `Before ${fmtNum(before)} -> After ${fmtNum(after)}`
+            : "Scenario inactive";
+        el("scenarioCompareKpis").innerHTML = [
+          kpi(
+            "Amber Increase",
+            signed(cmp.amberDelta),
+            cmpSub(cmp.before.AMBER || 0, cmp.after.AMBER || 0),
+            cmp.amberDelta > 0 ? "amber" : "green",
+          ),
+          kpi(
+            "Red Increase",
+            signed(cmp.redDelta),
+            cmpSub(cmp.before.RED || 0, cmp.after.RED || 0),
+            cmp.redDelta > 0 ? "red" : "green",
+          ),
+          kpi(
+            "At-Risk Increase",
+            signed(cmp.atRiskDelta),
+            cmpSub(
+              (cmp.before.AMBER || 0) + (cmp.before.RED || 0),
+              (cmp.after.AMBER || 0) + (cmp.after.RED || 0),
+            ),
+            cmp.atRiskDelta > 0 ? "amber" : "green",
+          ),
+          kpi(
+            "Delayed Shipments",
+            cmp.active ? fmtNum(cmp.delayedRows) : "0",
+            cmp.active ? "New ETA > Base ETA" : "Scenario inactive",
+            cmp.delayedRows ? "amber" : "green",
+          ),
+          kpi(
+            "Max Delay Impact",
+            `${cmp.active ? fmtNum(cmp.maxDelay) : "0"} d`,
+            "New ETA vs Base ETA",
+            cmp.maxDelay ? "amber" : "green",
+          ),
+          kpi(
+            "Miss SS1 -> Change to SS2",
+            cmp.active ? fmtNum(cmp.ss1ToSs2MissRows) : "0",
+            cmp.active ? "Base ETA in SS1, New ETA after SS1" : "Scenario inactive",
+            cmp.active && cmp.ss1ToSs2MissRows ? "red" : "green",
+          ),
+          kpi(
+            "Sea Cost Uplift",
+            cmp.active ? fmtMoney(cmp.costUplift) : "$0",
+            cmp.active ? `${fmtPct(cmp.costUpliftPct)} vs base sea` : "Scenario inactive",
+            cmp.costUplift > 0 ? "amber" : "green",
+          ),
+        ].join("");
+        el("peakKpis").innerHTML = [
+          kpi("Status · Green", green, "", "green"),
+          kpi("Status · Amber", amber, "", "amber"),
+          kpi("Status · Red", red, "", "red"),
+          kpi("Delayed Shipments", delayedRows, "LT uplift > 0", "amber"),
+          kpi(
+            "Max Shipment Delay",
+            `${maxShipDelay} d`,
+            "New ETA vs Base ETA",
+            "amber",
+          ),
+          kpi(
+            "Buffer <5d / missed",
+            model.bufCounts["Red <5d/missed"] || 0,
+            "expedite",
+            "red",
+          ),
+        ].join("");
+        el("costKpis").innerHTML = [
+          kpi("Total Base Sea Cost", fmtMoney(sums.base), "", "brand"),
+          kpi(
+            "Sea After Disruption",
+            fmtMoney(sums.sea),
+            `Uplift ${fmtMoney(sums.uplift)}`,
+            "amber",
+          ),
+          kpi(
+            "Full Air Total",
+            fmtMoney(sums.air),
+            `Premium ${fmtMoney(sums.air - sums.sea)} vs sea`,
+            "red",
+          ),
+          kpi(
+            "Split Total",
+            fmtMoney(sums.split),
+            `Saves ${fmtMoney(sums.air - sums.split)} vs full air`,
+            "green",
+          ),
+        ].join("");
+        let dcGreen = dc.filter((x) => x.Status !== "RED").length;
+        let avgCov = dc.length
+          ? dc.reduce((a, b) => a + (b.InventoryCoverageWeeks || 0), 0) /
+            dc.length
+          : 0;
+        let inboundUnits = dc.reduce(
+          (a, b) => a + (b.PlannedInboundUnits || 0),
+          0,
+        );
+        el("dcKpis").innerHTML = [
+          kpi("DCs in scope", dc.length, "", "brand"),
+          kpi(
+            "Inbound Units",
+            fmtNum(inboundUnits),
+            "From Pipeline_Source",
+            "brand",
+          ),
+          kpi("DCs ≥ buffer", dcGreen, "", "green"),
+          kpi(
+            "DCs < buffer",
+            dcRed,
+            dc
+              .filter((x) => x.Status === "RED")
+              .map((x) => x.DC)
+              .join(", "),
+            "red",
+          ),
+          kpi("Avg coverage", fmtNum(avgCov, 2) + " wks", "", "amber"),
+        ].join("");
+        let distOk = dist.filter((x) => x.SLAStatus !== "RED").length;
+        let lowest = Math.min(...dist.map((x) => x.Rolling ?? Infinity));
+        el("distKpis").innerHTML = [
+          kpi("Distributors monitored", dist.length, "", "brand"),
+          kpi(
+            "SLA OK",
+            distOk,
+            `≥ ${fmtPct(model.scenario.slaThreshold)}`,
+            "green",
+          ),
+          kpi(
+            "SLA RED",
+            slaRed,
+            dist
+              .filter((x) => x.SLAStatus === "RED")
+              .map((x) => x.SelectedDistributor)
+              .join(", "),
+            "red",
+          ),
+          kpi("Lowest Rolling SLA", fmtPct(lowest), "", "amber"),
+        ].join("");
+        el("aiText").textContent =
+          `Under ${model.scenario.name}, the DIS detects ${red} RED and ${amber} AMBER shipments, ${delayedRows} shipment row(s) with up to ${maxShipDelay} days of disruption delay, ${dcRed} DC(s) below the ${fmtNum(model.scenario.safetyBuffer, 1)}-week safety buffer, and ${slaRed} distributor(s) below the ${fmtPct(model.scenario.slaThreshold)} rolling SLA threshold. Recommended: split or air high-priority tracked loads only when readiness requires it, keep non-urgent volume on sea, expedite inbound to flagged DCs, and activate backup distributors where SLA is RED. Estimated split saving vs full air: ${fmtMoney(sums.air - sums.split)}.`;
+      }
+      function sumCosts(c) {
+        return {
+          base: c.reduce((a, b) => a + b.BaseSeaCost, 0),
+          sea: c.reduce((a, b) => a + b.SeaCostAfterDisruption, 0),
+          air: c.reduce((a, b) => a + b.FullAirCost, 0),
+          split: c.reduce((a, b) => a + b.SplitTotalCost, 0),
+          uplift: c.reduce(
+            (a, b) => a + b.SeaCostAfterDisruption - b.BaseSeaCost,
+            0,
+          ),
+        };
+      }
+      function buildScenarioComparison(rows, costs, scenario) {
+        const zeroCounts = { GREEN: 0, AMBER: 0, RED: 0 };
+        if (!scenario.active) {
+          return {
+            active: false,
+            before: zeroCounts,
+            after: zeroCounts,
+            amberDelta: 0,
+            redDelta: 0,
+            atRiskDelta: 0,
+            delayedRows: 0,
+            maxDelay: 0,
+            peakMissDelta: 0,
+            ss1ToSs2MissRows: 0,
+            costUplift: 0,
+            costUpliftPct: 0,
+          };
+        }
+        let before = countBy(rows, "BaseStatus");
+        let after = countBy(rows, "Status");
+        let beforeAtRisk = (before.AMBER || 0) + (before.RED || 0);
+        let afterAtRisk = (after.AMBER || 0) + (after.RED || 0);
+        let delayedRows = rows.filter(
+          (x) => (x.DisruptionDelayDays || 0) > 0,
+        ).length;
+        let maxDelay = Math.max(
+          0,
+          ...rows.map((x) => x.DisruptionDelayDays || 0),
+        );
+        let ss1ToSs2MissRows = rows.filter(
+          (x) =>
+            (x.DisruptionDelayDays || 0) > 0 &&
+            x.BaseETA &&
+            x.NewETA &&
+            x.SS1End &&
+            x.BaseETA <= x.SS1End &&
+            x.NewETA > x.SS1End,
+        ).length;
+        let sums = sumCosts(costs);
+        return {
+          active: true,
+          before,
+          after,
+          amberDelta: (after.AMBER || 0) - (before.AMBER || 0),
+          redDelta: (after.RED || 0) - (before.RED || 0),
+          atRiskDelta: afterAtRisk - beforeAtRisk,
+          delayedRows,
+          maxDelay,
+          peakMissDelta: (after.RED || 0) - (before.RED || 0),
+          ss1ToSs2MissRows,
+          costUplift: sums.uplift,
+          costUpliftPct: sums.base ? sums.uplift / sums.base : 0,
+        };
+      }
+      function destroyChart(id) {
+        if (charts[id]) {
+          charts[id].destroy();
+          delete charts[id];
+        }
+      }
+      function chart(id, cfg) {
+        destroyChart(id);
+        charts[id] = new Chart(el(id), cfg);
+      }
+      function renderCharts() {
+        let top = [...model.rows]
+          .sort((a, b) => (a.BufferDays ?? 9999) - (b.BufferDays ?? 9999))
+          .slice(0, 15);
+        chart("bufferChart", {
+          type: "bar",
+          data: {
+            labels: top.map((x) => x.BatchLoad),
+            datasets: [
+              {
+                label: "Buffer days",
+                data: top.map((x) => x.BufferDays),
+                backgroundColor: top.map((x) => statusColor(x.Status)),
+                borderWidth: 0,
+              },
+            ],
+          },
+          options: {
+            indexAxis: "y",
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+              x: { grid: { color: "#e5e7eb" } },
+              y: { ticks: { font: { size: 10 } } },
+            },
+          },
+        });
+        chart("donut", {
+          type: "doughnut",
+          data: {
+            labels: ["GREEN", "AMBER", "RED"],
+            datasets: [
+              {
+                data: [
+                  model.statusCounts.GREEN || 0,
+                  model.statusCounts.AMBER || 0,
+                  model.statusCounts.RED || 0,
+                ],
+                backgroundColor: [C.GREEN, C.AMBER, C.RED],
+                borderWidth: 0,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { position: "bottom" } },
+          },
+        });
+        let topCost = [...model.costs]
+          .sort((a, b) => b.FullAirCost - a.FullAirCost)
+          .slice(0, 10);
+        chart("costClustered", {
+          type: "bar",
+          data: {
+            labels: topCost.map((x) => x.OrderID),
+            datasets: [
+              {
+                label: "Sea after disruption",
+                data: topCost.map((x) => x.SeaCostAfterDisruption),
+                backgroundColor: C.AMBER,
+              },
+              {
+                label: "Full air",
+                data: topCost.map((x) => x.FullAirCost),
+                backgroundColor: C.RED,
+              },
+              {
+                label: "Split total",
+                data: topCost.map((x) => x.SplitTotalCost),
+                backgroundColor: C.GREEN,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { position: "bottom" } },
+            scales: {
+              y: {
+                ticks: { callback: (v) => "$" + Number(v).toLocaleString() },
+              },
+            },
+          },
+        });
+        let sums = sumCosts(model.costs);
+        chart("waterfall", {
+          type: "bar",
+          data: {
+            labels: ["Base sea", "+ Disruption", "Air premium", "Full air"],
+            datasets: [
+              {
+                label: "Cost delta",
+                data: [sums.base, sums.uplift, sums.air - sums.sea, sums.air],
+                backgroundColor: [C.BRAND, C.AMBER, C.RED, C.GREY],
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+              y: {
+                ticks: { callback: (v) => "$" + Number(v).toLocaleString() },
+              },
+            },
+          },
+        });
+        chart("dcChart", {
+          type: "bar",
+          data: {
+            labels: model.dc.map((x) => x.DC),
+            datasets: [
+              {
+                label: "Inventory coverage weeks",
+                data: model.dc.map((x) => x.InventoryCoverageWeeks),
+                backgroundColor: model.dc.map((x) =>
+                  x.Status === "RED" ? C.RED : C.GREEN,
+                ),
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { display: false },
+              thresholdLine: { threshold: model.scenario.safetyBuffer },
+            },
+            scales: { y: { beginAtZero: true } },
+          },
+          plugins: [thresholdPlugin],
+        });
+        let usDcLabels = ["DC-US-W", "DC-US-E"];
+        let usDcData = usDcLabels.map(
+          (dc) => model.inboundByDC.get(dc)?.units || 0,
+        );
+        let usDcCbm = usDcLabels.map(
+          (dc) => model.inboundByDC.get(dc)?.cbm || 0,
+        );
+        chart("usDcPie", {
+          type: "pie",
+          data: {
+            labels: usDcLabels,
+            datasets: [
+              {
+                data: usDcData,
+                cbm: usDcCbm,
+                backgroundColor: [C.BLUE, C.PURPLE],
+                borderWidth: 0,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { position: "bottom" },
+              tooltip: {
+                callbacks: {
+                  label: (ctx) => {
+                    let total = ctx.dataset.data.reduce((a, b) => a + b, 0);
+                    let units = ctx.parsed || 0;
+                    let pct = total ? units / total : 0;
+                    let cbm = ctx.dataset.cbm[ctx.dataIndex] || 0;
+                    return `${ctx.label}: ${fmtNum(units)} units (${fmtPct(pct)}) - ${fmtNum(cbm, 1)} CBM`;
+                  },
+                },
+              },
+            },
+          },
+        });
+        chart("slaLine", {
+          type: "line",
+          data: {
+            labels: ["Week 1", "Week 2", "Week 3", "Week 4"],
+            datasets: model.dist.map((x) => ({
+              label: x.SelectedDistributor,
+              data: [x.W1, x.W2, x.W3, x.W4].map((v) =>
+                v == null ? null : v * 100,
+              ),
+              borderColor: x.SLAStatus === "RED" ? C.RED : C.GREEN,
+              backgroundColor: x.SLAStatus === "RED" ? C.RED : C.GREEN,
+              tension: 0.25,
+            })),
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { position: "bottom" },
+              thresholdLine: { threshold: model.scenario.slaThreshold * 100 },
+            },
+            scales: {
+              y: { min: 80, max: 100, ticks: { callback: (v) => v + "%" } },
+            },
+          },
+          plugins: [thresholdPlugin],
+        });
+        chart("slaBar", {
+          type: "bar",
+          data: {
+            labels: model.dist.map((x) => x.SelectedDistributor),
+            datasets: [
+              {
+                label: "Rolling 4W SLA",
+                data: model.dist.map((x) => (x.Rolling || 0) * 100),
+                backgroundColor: model.dist.map((x) =>
+                  x.SLAStatus === "RED" ? C.RED : C.GREEN,
+                ),
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { display: false },
+              thresholdLine: { threshold: model.scenario.slaThreshold * 100 },
+            },
+            scales: {
+              y: { min: 80, max: 100, ticks: { callback: (v) => v + "%" } },
+            },
+          },
+          plugins: [thresholdPlugin],
+        });
+      }
+      const thresholdPlugin = {
+        id: "thresholdLine",
+        afterDraw(chart, args, opts) {
+          let y = chart.scales.y;
+          if (!opts || opts.threshold == null || !y) return;
+          let yPos = y.getPixelForValue(opts.threshold);
+          let ctx = chart.ctx;
+          ctx.save();
+          ctx.strokeStyle = C.RED;
+          ctx.setLineDash([5, 4]);
+          ctx.lineWidth = 1.4;
+          ctx.beginPath();
+          ctx.moveTo(chart.chartArea.left, yPos);
+          ctx.lineTo(chart.chartArea.right, yPos);
+          ctx.stroke();
+          ctx.restore();
+        },
+      };
+      function table(headers, rows) {
+        return `<table class="data"><thead><tr>${headers.map((h) => `<th>${esc(h)}</th>`).join("")}</tr></thead><tbody>${rows.join("")}</tbody></table>`;
+      }
+      function renderTables() {
+        el("statusMatrix").innerHTML = table(
+          ["Market", "DC", "Green", "Amber", "Red", "Total"],
+          model.matrix.map(
+            (x) =>
+              `<tr><td>${esc(x.Market)}</td><td>${esc(x.DC)}</td><td class="center"><span class="dot dot-green"></span>${x.GREEN || 0}</td><td class="center"><span class="dot dot-amber"></span>${x.AMBER || 0}</td><td class="center"><span class="dot dot-red"></span>${x.RED || 0}</td><td class="center"><b>${x.total}</b></td></tr>`,
+          ),
+        );
+        let risk = [...model.rows]
+          .filter((x) => x.Status !== "GREEN" || x.isHighlight)
+          .sort(
+            (a, b) =>
+              (a.Status === b.Status
+                ? 0
+                : a.Status === "RED"
+                  ? -1
+                  : b.Status === "RED"
+                    ? 1
+                    : a.Status === "AMBER"
+                      ? -1
+                      : 1) || (a.BufferDays ?? 0) - (b.BufferDays ?? 0),
+          )
+          .slice(0, 25);
+        el("atRiskTable").innerHTML = shipmentTable(risk);
+        el("fullShipmentTable").innerHTML = shipmentTable(model.rows);
+        let sums = sumCosts(model.costs);
+        el("costSummary").innerHTML = table(
+          ["Option", "Total Cost", "Service Impact", "Risk", "Decision"],
+          [
+            `<tr><td><b>Keep Sea after disruption</b></td><td class="right">${fmtMoney(sums.sea)}</td><td>Lowest logistics cost</td><td>${model.statusCounts.AMBER || 0} AMBER / ${model.statusCounts.RED || 0} RED shipments</td><td>Use for non-urgent volume</td></tr>`,
+            `<tr><td><b>Full Airfreight</b></td><td class="right">${fmtMoney(sums.air)}</td><td>Fastest recovery</td><td>Highest cost</td><td>Avoid unless critical</td></tr>`,
+            `<tr class="row-amber"><td><b>Split Shipment (${Math.round(model.scenario.urgentShare * 100)}/${Math.round((1 - model.scenario.urgentShare) * 100)})</b></td><td class="right">${fmtMoney(sums.split)}</td><td>Urgent volume protected</td><td>Saves ${fmtMoney(sums.air - sums.split)} vs full air</td><td><b>Recommended for tracked/high-risk loads</b></td></tr>`,
+          ],
+        );
+        let topCost = [...model.costs]
+          .sort((a, b) => b.FullAirCost - a.FullAirCost)
+          .slice(0, 20);
+        el("costTable").innerHTML = table(
+          [
+            "Order",
+            "Container ID",
+            "Tracked",
+            "Mkt",
+            "DC",
+            "Qty",
+            "Sea + disruption",
+            "Full Air",
+            "Split Total",
+            "Status",
+            "Recommendation",
+          ],
+          topCost.map(
+            (x) =>
+              `<tr class="${rowClass(x)}"><td>${esc(x.OrderID)}</td><td class="mono">${esc(x.BatchLoad)}</td><td>${highlightChip(x.isHighlight)}</td><td>${esc(x.Market)}</td><td>${esc(x.DC)}</td><td class="right">${fmtNum(x.Qty)}</td><td class="right">${fmtMoney(x.SeaCostAfterDisruption)}</td><td class="right">${fmtMoney(x.FullAirCost)}</td><td class="right">${fmtMoney(x.SplitTotalCost)}</td><td>${statusChip(x.Status)}</td><td><b>${esc(x.Recommendation)}</b></td></tr>`,
+          ),
+        );
+        el("dcTable").innerHTML = table(
+          [
+            "DC",
+            "Market",
+            "Capacity CBM",
+            "Planned Inbound Units",
+            "Planned Inbound CBM",
+            "Coverage",
+            "Status",
+            "Alert",
+          ],
+          model.dc.map(
+            (x) =>
+              `<tr class="${x.Status === "RED" ? "row-red" : ""}"><td><b>${esc(x.DC)}</b></td><td>${esc(x.Market)}</td><td class="right">${fmtNum(x.StorageCapacityCBM, 1)}</td><td class="right">${fmtNum(x.PlannedInboundUnits)}</td><td class="right">${fmtNum(x.PlannedInboundCBM, 1)}</td><td class="right"><b>${fmtNum(x.InventoryCoverageWeeks, 2)}</b></td><td>${statusChip(x.Status)}</td><td>${esc(x.AlertNote || "Normal")}</td></tr>`,
+          ),
+        );
+        el("distTable").innerHTML = table(
+          [
+            "Market",
+            "Selected Distributor",
+            "Backup",
+            "Capacity CBM",
+            "Planned CBM",
+            "Rolling 4W SLA",
+            "Status",
+            "Contingency",
+          ],
+          model.dist.map(
+            (x) =>
+              `<tr class="${x.SLAStatus === "RED" ? "row-red" : ""}"><td>${esc(x.Market)}</td><td><b>${esc(x.SelectedDistributor)}</b></td><td>${esc(x.BackupDistributor)}</td><td class="right">${fmtNum(x.CapacityCBM, 1)}</td><td class="right">${fmtNum(x.PlannedCBM, 1)}</td><td class="right"><b>${fmtPct(x.Rolling)}</b></td><td>${statusChip(x.SLAStatus)}</td><td>${esc(x.ContingencyAction)}</td></tr>`,
+          ),
+        );
+        el("backupTable").innerHTML = table(
+          [
+            "Market",
+            "Primary",
+            "Backup",
+            "Trigger",
+            "Switching Cost",
+            "Operational Impact",
+          ],
+          model.backup.map(
+            (x) =>
+              `<tr><td>${esc(x.Market)}</td><td>${esc(x.Primary)}</td><td>${esc(x.Backup)}</td><td>${esc(x.Trigger)}</td><td>${esc(x.SwitchingCost)}</td><td>${esc(x.Impact)}</td></tr>`,
+          ),
+        );
+      }
+      function shipmentTable(rows) {
+        return table(
+          [
+            "Order",
+            "Container ID",
+            "SKU",
+            "Qty",
+            "Mkt",
+            "DC",
+            "Tracked",
+            "Departure",
+            "Base ETA",
+            "New ETA",
+            "Peak",
+            "Peak Start",
+            "Peak End",
+            "Buffer",
+            "LT Delay",
+            "Peak Delay",
+            "Status",
+            "Action",
+          ],
+          rows.map(
+            (x) =>
+              `<tr class="${rowClass(x)}"><td>${esc(x.OrderID)}</td><td class="mono">${esc(x.BatchLoad)}</td><td class="center">${esc(x.SKU)}</td><td class="right">${fmtNum(x.Qty)}</td><td>${esc(x.Market)}</td><td>${esc(x.DC)}</td><td>${highlightChip(x.isHighlight)}</td><td>${dateISO(x.Departure)}</td><td>${dateISO(x.BaseETA)}</td><td>${dateISO(x.NewETA)}</td><td>${esc(x.PeakLabel)}</td><td>${dateISO(x.PeakStart)}</td><td>${dateISO(x.PeakEnd)}</td><td class="right">${fmtNum(x.BufferDays)}</td><td class="right"><b>${fmtNum(x.DisruptionDelayDays)}</b></td><td class="right">${fmtNum(x.PeakDelayDays)}</td><td>${statusChip(x.Status)}</td><td>${esc(x.Action)}</td></tr>`,
+          ),
+        );
+      }
+      function renderGantt() {
+        if (!model) return;
+        let selM = el("ganttMarket");
+        let markets = [
+          ...new Set(model.rows.map((x) => x.Market).filter(Boolean)),
+        ].sort();
+        let cur = selM.value;
+        selM.innerHTML =
+          '<option value="all">All markets</option>' +
+          markets
+            .map((m) => `<option value="${esc(m)}">${esc(m)} only</option>`)
+            .join("");
+        selM.value = markets.includes(cur) ? cur : "all";
+        let rows = [...model.rows];
+        let fM = el("ganttMarket").value,
+          fS = el("ganttStatus").value,
+          fB = el("ganttBufCat").value,
+          fH = el("ganttHighlight").value;
+        if (fM !== "all") rows = rows.filter((r) => r.Market === fM);
+        if (fS !== "all") rows = rows.filter((r) => r.Status === fS);
+        if (fB !== "all") rows = rows.filter((r) => r.BufferCat === fB);
+        if (fH === "highlight") rows = rows.filter((r) => r.isHighlight);
+        if (fH === "normal") rows = rows.filter((r) => !r.isHighlight);
+        let sort = el("ganttSort").value;
+        rows.sort((a, b) =>
+          sort === "departure"
+            ? a.Departure - b.Departure
+            : sort === "market_dc"
+              ? (a.Market + a.DC + a.BatchLoad).localeCompare(
+                  b.Market + b.DC + b.BatchLoad,
+                )
+              : sort === "status"
+                ? { RED: 0, AMBER: 1, GREEN: 2 }[a.Status] -
+                  { RED: 0, AMBER: 1, GREEN: 2 }[b.Status]
+                : sort === "highlight"
+                  ? (b.isHighlight ? 1 : 0) - (a.isHighlight ? 1 : 0) ||
+                    (a.BufferDays ?? 999) - (b.BufferDays ?? 999)
+                  : (a.BufferDays ?? 999) - (b.BufferDays ?? 999),
+        );
+        el("ganttCount").textContent =
+          `${rows.length} / ${model.rows.length} rows`;
+        drawGantt(rows);
+      }
+      function drawGantt(rows) {
+        let svg = el("ganttSvg"),
+          tip = el("ganttTip");
+        let left = 225,
+          top = 34,
+          rowH = 24,
+          h = top + rows.length * rowH + 42,
+          w = 1180;
+        if (!rows.length) {
+          svg.setAttribute("width", w);
+          svg.setAttribute("height", 120);
+          svg.innerHTML =
+            '<text x="20" y="60" fill="#64748b">No loads match current filters.</text>';
+          return;
+        }
+        let allDates = [];
+        for (const r of rows)
+          for (const d of [
+            r.Departure,
+            r.BaseETA,
+            r.NewETA,
+            r.SS1Start,
+            r.SS1End,
+            r.SS2Start,
+            r.SS2End,
+          ])
+            if (d) allDates.push(d);
+        let min = new Date(Math.min(...allDates)),
+          max = new Date(Math.max(...allDates));
+        min.setUTCDate(min.getUTCDate() - 7);
+        max.setUTCDate(max.getUTCDate() + 14);
+        let span = max - min;
+        let plotW = w - left - 28;
+        let x = (d) => left + ((d - min) / span) * plotW;
+        let y = (i) => top + i * rowH;
+        let defs = `<defs><pattern id="delayPat" patternUnits="userSpaceOnUse" width="8" height="8"><path d="M0,8 L8,0" stroke="#9ca3af" stroke-width="2"/></pattern></defs>`;
+        let parts = [
+          defs,
+          `<rect x="0" y="0" width="${w}" height="${h}" fill="#fbfcfe"/>`,
+        ];
+        let months = [];
+        let m = new Date(Date.UTC(min.getUTCFullYear(), min.getUTCMonth(), 1));
+        while (m <= max) {
+          months.push(new Date(m));
+          m.setUTCMonth(m.getUTCMonth() + 1);
+        }
+        for (const d of months) {
+          let xx = x(d);
+          parts.push(
+            `<line x1="${xx}" y1="18" x2="${xx}" y2="${h - 20}" stroke="#e5e7eb" stroke-dasharray="2 3"/>`,
+          );
+          parts.push(
+            `<text x="${xx + 4}" y="16" font-size="10" fill="#64748b">${d.toLocaleString("en", { month: "short", timeZone: "UTC" })} ${String(d.getUTCFullYear()).slice(2)}</text>`,
+          );
+        }
+        for (let i = 0; i < rows.length; i++) {
+          let r = rows[i],
+            yy = y(i);
+          if (i % 2)
+            parts.push(
+              `<rect x="0" y="${yy - 3}" width="${w}" height="${rowH}" fill="#f8fafc"/>`,
+            );
+          let label = (r.isHighlight ? "⭐ " : "") + r.BatchLoad;
+          parts.push(
+            `<text x="8" y="${yy + 10}" font-size="10.5" fill="#0f172a" class="mono">${esc(label.slice(0, 34))}</text>`,
+          );
+          parts.push(
+            `<text x="8" y="${yy + 21}" font-size="9.5" fill="#64748b">${esc(r.Market)} · ${esc(r.DC)} · ${esc(r.SKU)} · ${fmtNum(r.Qty)}</text>`,
+          );
+          for (const [s, e, active] of [
+            [r.SS1Start, r.SS1End, r.PeakLabel === "SS1"],
+            [r.SS2Start, r.SS2End, r.PeakLabel === "SS2"],
+          ])
+            if (s && e) {
+              parts.push(
+                `<rect x="${x(s)}" y="${yy + 3}" width="${Math.max(2, x(e) - x(s))}" height="14" rx="3" fill="rgba(34,197,94,.16)" stroke="rgba(34,197,94,.65)" stroke-dasharray="3 3" opacity="${active ? 1 : 0.42}"/>`,
+              );
+            }
+          if (r.Departure && r.BaseETA) {
+            parts.push(
+              `<rect data-idx="${i}" class="gantt-hot" x="${x(r.Departure)}" y="${yy + 6}" width="${Math.max(2, x(r.BaseETA) - x(r.Departure))}" height="9" rx="3" fill="${bufferColor(r.BufferCat)}" ${r.isHighlight ? 'stroke="#9333ea" stroke-width="2"' : ""}/>`,
+            );
+          }
+          if (r.BaseETA && r.NewETA && r.NewETA > r.BaseETA) {
+            let dx1 = x(r.BaseETA),
+              dx2 = x(r.NewETA),
+              dw = Math.max(2, dx2 - dx1),
+              dd = r.DisruptionDelayDays || diffDays(r.NewETA, r.BaseETA);
+            parts.push(
+              `<rect data-idx="${i}" class="gantt-hot" x="${dx1}" y="${yy + 6}" width="${dw}" height="9" rx="3" fill="url(#delayPat)" stroke="${bufferColor(r.BufferCat)}" opacity=".75"/>`,
+            );
+            let lx = dw > 34 ? dx1 + dw / 2 : dx2 + 7;
+            let anchor = dw > 34 ? "middle" : "start";
+            parts.push(
+              `<text x="${lx}" y="${yy + 15}" text-anchor="${anchor}" font-size="9" font-weight="700" fill="#334155">+${fmtNum(dd)}d</text>`,
+            );
+          }
+          if (r.NewETA) {
+            parts.push(
+              `<circle data-idx="${i}" class="gantt-hot" cx="${x(r.NewETA)}" cy="${yy + 10.5}" r="4" fill="#3b82f6" stroke="#0f172a" stroke-width=".8"/>`,
+            );
+          }
+          parts.push(
+            `<text x="${w - 20}" y="${yy + 14}" text-anchor="end" font-size="10" fill="${statusColor(r.Status)}">${r.Status}</text>`,
+          );
+        }
+        let today = parseDate("2026-04-28");
+        if (today >= min && today <= max)
+          parts.push(
+            `<line x1="${x(today)}" y1="18" x2="${x(today)}" y2="${h - 20}" stroke="#1f3a5f" stroke-dasharray="4 3" opacity=".55"/>`,
+          );
+        svg.setAttribute("width", w);
+        svg.setAttribute("height", h);
+        svg.innerHTML = parts.join("");
+        svg.querySelectorAll(".gantt-hot").forEach((node) => {
+          node.addEventListener("mousemove", (ev) => {
+            let r = rows[+node.dataset.idx];
+            tip.innerHTML = `<b>${esc(r.BatchLoad)}</b><br>${r.isHighlight ? "⭐ Priority tracked<br>" : ""}Order: ${esc(r.OrderID)} · SKU ${esc(r.SKU)} · ${fmtNum(r.Qty)} units<br>${esc(r.Market)} / ${esc(r.DC)} · ${esc(r.LoadType)}<br>Departure: ${dateISO(r.Departure)}<br>Base ETA: ${dateISO(r.BaseETA)} → New ETA: ${dateISO(r.NewETA)}<br>Shipment delay vs baseline: +${fmtNum(r.DisruptionDelayDays)}d<br>Peak: ${esc(r.PeakLabel)} (${dateISO(r.PeakStart)} → ${dateISO(r.PeakEnd)})<br>Buffer: ${fmtNum(r.BufferDays)}d · Peak delay: ${fmtNum(r.PeakDelayDays)}d · Status: ${esc(r.Status)}<br>${esc(r.Action)}`;
+            tip.style.display = "block";
+            tip.style.left = ev.clientX + 12 + "px";
+            tip.style.top = ev.clientY + 12 + "px";
+          });
+          node.addEventListener(
+            "mouseleave",
+            () => (tip.style.display = "none"),
+          );
+        });
+      }
+      async function loadFile(file) {
+        el("loadStatus").textContent = "Reading workbook...";
+        el("loadStatus").className = "status-line";
+        let buf = await file.arrayBuffer();
+        let wb = XLSX.read(buf, { type: "array", cellDates: true });
+        model = buildModel(wb);
+        renderAll();
+        el("loadStatus").textContent =
+          `Loaded ${file.name}: ${model.rows.length} pipeline rows recomputed, ${model.priorityCount} tracked/highlight rows found.`;
+        el("loadStatus").className = "status-line ok";
+      }
+      function clearAll() {
+        model = null;
+        Object.keys(charts).forEach(destroyChart);
+        [
+          "execKpis",
+          "scenarioCompareKpis",
+          "peakKpis",
+          "costKpis",
+          "dcKpis",
+          "distKpis",
+          "statusMatrix",
+          "atRiskTable",
+          "fullShipmentTable",
+          "costSummary",
+          "costTable",
+          "dcTable",
+          "distTable",
+          "backupTable",
+        ].forEach((id) => (el(id).innerHTML = ""));
+        el("aiText").textContent =
+          "Upload the input file to generate the recommendation.";
+        el("ganttSvg").innerHTML = "";
+        el("activeScenarioLabel").textContent = "Waiting for upload";
+        el("loadStatus").textContent =
+          "Choose DIS_Input_standard.xlsx to render the dashboard.";
+        el("loadStatus").className = "status-line";
+      }
+      el("loadBtn").addEventListener("click", () => {
+        let f = el("excelFile").files[0];
+        if (!f) {
+          el("loadStatus").textContent = "Please choose an Excel file first.";
+          el("loadStatus").className = "status-line err";
+          return;
+        }
+        loadFile(f).catch((err) => {
+          console.error(err);
+          el("loadStatus").textContent = "Error: " + err.message;
+          el("loadStatus").className = "status-line err";
+        });
+      });
+      el("clearBtn").addEventListener("click", clearAll);
+      [
+        "ganttSort",
+        "ganttMarket",
+        "ganttStatus",
+        "ganttBufCat",
+        "ganttHighlight",
+      ].forEach((id) => el(id).addEventListener("change", renderGantt));
+      document.querySelectorAll("nav.tabs a").forEach((a) =>
+        a.addEventListener("click", () => {
+          document
+            .querySelectorAll("nav.tabs a")
+            .forEach((x) => x.classList.remove("active"));
+          a.classList.add("active");
+        }),
+      );
+    </script>
+  </body>
+</html>

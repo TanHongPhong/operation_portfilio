@@ -142,6 +142,22 @@
       border: 2px solid #4c6456;
     }
 
+    .project-card[data-project="scmission-sota"] {
+      order: -2;
+    }
+
+    .project-card[data-project="food-supply-chain"] {
+      order: -1;
+    }
+
+    .project-card[data-project="bird-nest"] {
+      order: 0;
+    }
+
+    .project-card[data-project="picking-robot"] {
+      order: 1;
+    }
+
     .project-slide {
       display: none !important;
     }
@@ -153,6 +169,35 @@
     .gallery-thumb.is-active {
       outline: 3px solid #4c6456;
       outline-offset: 2px;
+    }
+
+    .project-image-strip .project-image-item {
+      flex: 0 0 5rem !important;
+      aspect-ratio: 1 / 1;
+      scroll-snap-align: start;
+    }
+
+    .project-image-strip {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    .project-image-strip::-webkit-scrollbar {
+      display: none;
+    }
+
+    .project-image-strip .project-image-item:hover {
+      flex-basis: 11rem !important;
+    }
+
+    @media (min-width: 768px) {
+      .project-image-strip .project-image-item {
+        flex-basis: 8rem !important;
+      }
+
+      .project-image-strip .project-image-item:hover {
+        flex-basis: 16rem !important;
+      }
     }
   </style>
 </head>
@@ -249,16 +294,16 @@
     <div class="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-8 mt-16 flex justify-start">
       <div class="space-y-10 w-fit max-w-3xl bg-black/40 backdrop-blur-md p-8 md:p-12 rounded-[2.5rem] shadow-2xl border border-white/20">
         <span
-          class="text-white/90 font-label text-xs font-semibold tracking-widest uppercase inline-block bg-white/10 px-5 py-2 rounded-full backdrop-blur-md border border-white/20 shadow-sm">Logistics
-          Production Planning &amp; Manufacturing Operations</span>
+          class="text-white/90 font-label text-xs font-semibold tracking-widest uppercase inline-block bg-white/10 px-5 py-2 rounded-full backdrop-blur-md border border-white/20 shadow-sm">Production
+          Planning · Manufacturing Operations</span>
         <h1
           class="text-3xl md:text-6xl font-extrabold font-headline leading-[1.1] tracking-tight text-white whitespace-nowrap" style="text-shadow: 0 2px 10px rgba(0,0,0,0.3);">
           TAN HONG <span class="text-[#cee9d6]"> PHONG</span>
         </h1>
         <p class="text-lg md:text-xl text-white/90 max-w-lg leading-relaxed font-medium" style="text-shadow: 0 1px 3px rgba(0,0,0,0.5);">
           Logistics Technology student at UEH interested in improving manufacturing operations through planning, data
-          analysis, optimization, AI, and applied technology. I am particularly interested in production scheduling,
-          capacity planning, resource allocation, and data-driven operational improvement.
+          analysis, optimization, AI, and applied technology. I am particularly interested in production planning,
+          capacity analysis, resource coordination, and data-driven operational improvement.
         </p>
         <div class="flex flex-wrap gap-4 pt-4">
           <a class="bg-primary text-on-primary px-8 py-4 rounded-full font-semibold transition-all hover:bg-primary-dim shadow-lg shadow-primary/20"
@@ -272,7 +317,7 @@
 
   <main class="max-w-7xl mx-auto px-6 md:px-8 pt-12">
     <!-- About Me Section -->
-    <section class="py-24 border-t border-transparent" id="about">
+    <section class="py-16 border-t border-transparent" id="about">
       <div class="asymmetric-grid gap-16">
         <div>
           <h2 class="text-3xl md:text-4xl font-bold font-headline leading-tight text-on-surface sticky top-32">
@@ -295,8 +340,61 @@
         </div>
       </div>
     </section>
+    <!-- Project Image Strip -->
+    <section class="pb-16" aria-label="Selected project images">
+      <div class="project-image-strip flex h-28 md:h-48 gap-3 overflow-x-auto overflow-y-visible pb-2 rounded-xl">
+        <div class="project-image-item group relative min-w-0 flex-1 hover:flex-[2.4] transition-all duration-500 ease-out overflow-hidden rounded-lg">
+          <img src="assets/projects/AIoT/aiot-research-02.jpg" alt="AIoT research project" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy">
+        </div>
+        <div class="project-image-item group relative min-w-0 flex-1 hover:flex-[2.4] transition-all duration-500 ease-out overflow-hidden rounded-lg">
+          <img src="assets/projects/robot_bird_nest/bird-nest-04.jpg" alt="Autonomous monitoring robot project" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy">
+        </div>
+        <div class="project-image-item group relative min-w-0 flex-1 hover:flex-[2.4] transition-all duration-500 ease-out overflow-hidden rounded-lg">
+          <img src="assets/projects/robot_bird_nest/bird-nest-05.jpg" alt="Autonomous monitoring robot project" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy">
+        </div>
+        <div class="project-image-item group relative min-w-0 flex-1 hover:flex-[2.4] transition-all duration-500 ease-out overflow-hidden rounded-lg">
+          <img src="assets/projects/robot_chalange/picking-robot-05.jpg" alt="Autonomous picking robot project" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy">
+        </div>
+        <div class="project-image-item group relative min-w-0 flex-1 hover:flex-[2.4] transition-all duration-500 ease-out overflow-hidden rounded-lg">
+          <img src="assets/projects/AIoT/aiot-research-03.jpg" alt="AIoT research project" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy">
+        </div>
+        <div class="project-image-item group relative min-w-0 flex-1 hover:flex-[2.4] transition-all duration-500 ease-out overflow-hidden rounded-lg">
+          <img src="assets/highlights/highlight-01.jpg" alt="Portfolio project highlight" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy">
+        </div>
+        <div class="project-image-item group relative min-w-0 flex-1 hover:flex-[2.4] transition-all duration-500 ease-out overflow-hidden rounded-lg">
+          <img src="assets/highlights/highlight-02.jpg" alt="Portfolio project highlight" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy">
+        </div>
+        <div class="project-image-item group relative min-w-0 flex-1 hover:flex-[2.4] transition-all duration-500 ease-out overflow-hidden rounded-lg">
+          <img src="assets/highlights/highlight-03.jpg" alt="Portfolio project highlight" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy">
+        </div>
+        <div class="project-image-item group relative min-w-0 flex-1 hover:flex-[2.4] transition-all duration-500 ease-out overflow-hidden rounded-lg">
+          <img src="assets/highlights/highlight-04.jpg" alt="Portfolio project highlight" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy">
+        </div>
+        <div class="project-image-item group relative min-w-0 flex-1 hover:flex-[2.4] transition-all duration-500 ease-out overflow-hidden rounded-lg">
+          <img src="assets/highlights/highlight-05.jpg" alt="Portfolio project highlight" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy">
+        </div>
+        <div class="project-image-item group relative min-w-0 flex-1 hover:flex-[2.4] transition-all duration-500 ease-out overflow-hidden rounded-lg">
+          <img src="assets/highlights/highlight-06.jpg" alt="Portfolio project highlight" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy">
+        </div>
+        <div class="project-image-item group relative min-w-0 flex-1 hover:flex-[2.4] transition-all duration-500 ease-out overflow-hidden rounded-lg">
+          <img src="assets/highlights/highlight-07.jpg" alt="Portfolio project highlight" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy">
+        </div>
+        <div class="project-image-item group relative min-w-0 flex-1 hover:flex-[2.4] transition-all duration-500 ease-out overflow-hidden rounded-lg">
+          <img src="assets/highlights/highlight-08.jpg" alt="Portfolio project highlight" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy">
+        </div>
+        <div class="project-image-item group relative min-w-0 flex-1 hover:flex-[2.4] transition-all duration-500 ease-out overflow-hidden rounded-lg">
+          <img src="assets/highlights/highlight-09.jpg" alt="Portfolio project highlight" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy">
+        </div>
+        <div class="project-image-item group relative min-w-0 flex-1 hover:flex-[2.4] transition-all duration-500 ease-out overflow-hidden rounded-lg">
+          <img src="assets/projects/robot_chalange/picking-robot-06.jpg" alt="Autonomous picking robot project" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy">
+        </div>
+        <div class="project-image-item group relative min-w-0 flex-1 hover:flex-[2.4] transition-all duration-500 ease-out overflow-hidden rounded-lg">
+          <img src="assets/projects/robot_chalange/picking-robot-07.jpg" alt="Autonomous picking robot project" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy">
+        </div>
+      </div>
+    </section>
     <!-- Education Section -->
-    <section class="py-24 bg-surface-container-low -mx-8 px-8 rounded-[3rem]" id="education">
+    <section class="py-16 bg-surface-container-low -mx-8 px-8 rounded-[3rem]" id="education">
       <div class="max-w-4xl mx-auto space-y-12">
         <div class="text-center space-y-4">
           <span class="material-symbols-outlined text-4xl text-primary" data-icon="school">school</span>
@@ -337,7 +435,7 @@
       </div>
     </section>
     <!-- Projects Section -->
-    <section class="py-32" id="projects">
+    <section class="py-20" id="projects">
       <div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
         <div class="space-y-4">
           <span class="text-primary font-label text-xs font-semibold tracking-widest uppercase">Research &amp;
@@ -354,31 +452,29 @@
           <div class="mb-6 flex justify-between items-start">
             <span class="material-symbols-outlined text-primary text-3xl" data-icon="warehouse">warehouse</span>
             <div class="flex gap-2">
-              <span class="px-2 py-1 bg-surface-container text-xs rounded text-on-surface-variant">Robot System</span>
-              <span class="px-2 py-1 bg-surface-container text-xs rounded text-on-surface-variant">Monitoring</span>
+              <span class="px-2 py-1 bg-surface-container text-xs rounded text-on-surface-variant">Robotics</span>
+              <span class="px-2 py-1 bg-surface-container text-xs rounded text-on-surface-variant">AI Inspection</span>
             </div>
           </div>
-          <h3 class="text-xl font-bold font-headline mb-4 group-hover:text-primary transition-colors">Bird’s Nest
-            Monitoring Robot</h3>
-          <p class="text-on-surface-variant text-sm mb-6 flex-grow leading-relaxed">Researched and designed a monitoring
-            solution for indoor bird’s nest houses, focusing on how operational data can support environmental control
-            and day-to-day supervision.</p>
+          <h3 class="text-xl font-bold font-headline mb-4 group-hover:text-primary transition-colors">Autonomous
+            Monitoring Robot &amp; AI-Based Inspection System</h3>
+          <p class="text-on-surface-variant text-sm mb-6 flex-grow leading-relaxed">Research Project · Seoul Smart
+            City Prize 2025 Submission &amp; Nhà nghiên cứu trẻ UEH 2025.</p>
           <div class="mb-6">
             <p class="text-xs font-semibold text-primary uppercase tracking-wider mb-3">Skills</p>
             <div class="flex flex-wrap gap-2">
-              <span class="px-3 py-1 bg-primary-container text-on-primary-container rounded-full text-xs font-medium">Operational Monitoring</span>
-              <span class="px-3 py-1 bg-primary-container text-on-primary-container rounded-full text-xs font-medium">Process Observation</span>
-              <span class="px-3 py-1 bg-primary-container text-on-primary-container rounded-full text-xs font-medium">Data Analysis</span>
-              <span class="px-3 py-1 bg-primary-container text-on-primary-container rounded-full text-xs font-medium">IoT</span>
+              <span class="px-3 py-1 bg-primary-container text-on-primary-container rounded-full text-xs font-medium">Robotics</span>
+              <span class="px-3 py-1 bg-primary-container text-on-primary-container rounded-full text-xs font-medium">Autonomous Navigation</span>
+              <span class="px-3 py-1 bg-primary-container text-on-primary-container rounded-full text-xs font-medium">Path Planning</span>
+              <span class="px-3 py-1 bg-primary-container text-on-primary-container rounded-full text-xs font-medium">AI Applications</span>
             </div>
           </div>
           <div class="pt-6 border-t border-outline-variant/10">
             <div class="flex items-center gap-2 text-xs font-semibold text-primary uppercase tracking-wider mb-2">
               <span class="material-symbols-outlined text-sm" data-icon="task_alt">task_alt</span> Result
             </div>
-            <p class="text-on-surface text-sm font-medium">Built a practical monitoring approach that supports better
-              observation and operational management.
-            </p>
+            <p class="text-on-surface text-sm font-medium">Developed an integrated robotic monitoring system for
+              autonomous movement, AI-supported inspection, and automatic charging.</p>
           </div>
         </div>
         <!-- Project 2 -->
@@ -388,30 +484,28 @@
             <span class="material-symbols-outlined text-primary text-3xl" data-icon="query_stats">query_stats</span>
             <div class="flex gap-2">
               <span class="px-2 py-1 bg-surface-container text-xs rounded text-on-surface-variant">Automation</span>
-              <span class="px-2 py-1 bg-surface-container text-xs rounded text-on-surface-variant">AI</span>
+              <span class="px-2 py-1 bg-surface-container text-xs rounded text-on-surface-variant">Computer Vision</span>
             </div>
           </div>
           <h3 class="text-xl font-bold font-headline mb-4 group-hover:text-primary transition-colors">Autonomous
-            Picking Robot</h3>
-          <p class="text-on-surface-variant text-sm mb-6 flex-grow leading-relaxed">Developed a smart picking concept
-            inspired by factory operations, using computer vision to improve object identification and support more
-            efficient task execution.</p>
+            Picking Robot — Robot Challenge 2025</h3>
+          <p class="text-on-surface-variant text-sm mb-6 flex-grow leading-relaxed">Competition Project · Robot
+            Challenge 2025.</p>
           <div class="mb-6">
             <p class="text-xs font-semibold text-primary uppercase tracking-wider mb-3">Skills</p>
             <div class="flex flex-wrap gap-2">
-              <span class="px-3 py-1 bg-primary-container text-on-primary-container rounded-full text-xs font-medium">Workflow Analysis</span>
+              <span class="px-3 py-1 bg-primary-container text-on-primary-container rounded-full text-xs font-medium">Robotics</span>
               <span class="px-3 py-1 bg-primary-container text-on-primary-container rounded-full text-xs font-medium">Automation</span>
               <span class="px-3 py-1 bg-primary-container text-on-primary-container rounded-full text-xs font-medium">Computer Vision</span>
-              <span class="px-3 py-1 bg-primary-container text-on-primary-container rounded-full text-xs font-medium">Process Improvement</span>
+              <span class="px-3 py-1 bg-primary-container text-on-primary-container rounded-full text-xs font-medium">System Testing</span>
             </div>
           </div>
           <div class="pt-6 border-t border-outline-variant/10">
             <div class="flex items-center gap-2 text-xs font-semibold text-primary uppercase tracking-wider mb-2">
               <span class="material-symbols-outlined text-sm" data-icon="task_alt">task_alt</span> Result
             </div>
-            <p class="text-on-surface text-sm font-medium">Explored how AI-based automation can support operational
-              accuracy and workflow efficiency.
-            </p>
+            <p class="text-on-surface text-sm font-medium">Built and tested a working autonomous picking robot
+              prototype for the competition.</p>
           </div>
         </div>
         <!-- Project 3 -->
@@ -420,57 +514,92 @@
           <div class="mb-6 flex justify-between items-start">
             <span class="material-symbols-outlined text-primary text-3xl" data-icon="dashboard">dashboard</span>
             <div class="flex gap-2">
-              <span class="px-2 py-1 bg-surface-container text-xs rounded text-on-surface-variant">Supply Chain
-                Tech</span>
-              <span class="px-2 py-1 bg-surface-container text-xs rounded text-on-surface-variant">AI</span>
+              <span class="px-2 py-1 bg-surface-container text-xs rounded text-on-surface-variant">AIoT</span>
+              <span class="px-2 py-1 bg-surface-container text-xs rounded text-on-surface-variant">Cold Chain</span>
               <span class="px-2 py-1 bg-surface-container text-xs rounded text-on-surface-variant">IoT</span>
             </div>
           </div>
-          <h3 class="text-xl font-bold font-headline mb-4 group-hover:text-primary transition-colors">AI, IoT &amp;
-            Blockchain for Food Supply Chain</h3>
-          <p class="text-on-surface-variant text-sm mb-6 flex-grow leading-relaxed">Researched the use of AI, IoT, and
-            blockchain in food supply chains to improve information transparency, traceability, and coordination across
-            supply chain activities.</p>
+          <h3 class="text-xl font-bold font-headline mb-4 group-hover:text-primary transition-colors">AIoT-Based
+            Operational Monitoring &amp; Product Verification</h3>
+          <p class="text-on-surface-variant text-sm mb-6 flex-grow leading-relaxed">Team Research Project · Award B —
+            CTD Scholars Student Awards 2025.</p>
           <div class="mb-6">
             <p class="text-xs font-semibold text-primary uppercase tracking-wider mb-3">Skills</p>
             <div class="flex flex-wrap gap-2">
-              <span class="px-3 py-1 bg-primary-container text-on-primary-container rounded-full text-xs font-medium">Process Analysis</span>
-              <span class="px-3 py-1 bg-primary-container text-on-primary-container rounded-full text-xs font-medium">Traceability</span>
-              <span class="px-3 py-1 bg-primary-container text-on-primary-container rounded-full text-xs font-medium">Information Flow</span>
-              <span class="px-3 py-1 bg-primary-container text-on-primary-container rounded-full text-xs font-medium">Supply Chain Visibility</span>
+              <span class="px-3 py-1 bg-primary-container text-on-primary-container rounded-full text-xs font-medium">Operational Monitoring</span>
+              <span class="px-3 py-1 bg-primary-container text-on-primary-container rounded-full text-xs font-medium">IoT</span>
+              <span class="px-3 py-1 bg-primary-container text-on-primary-container rounded-full text-xs font-medium">Computer Vision</span>
+              <span class="px-3 py-1 bg-primary-container text-on-primary-container rounded-full text-xs font-medium">System Integration</span>
             </div>
           </div>
           <div class="pt-6 border-t border-outline-variant/10">
             <div class="flex items-center gap-2 text-xs font-semibold text-primary uppercase tracking-wider mb-2">
               <span class="material-symbols-outlined text-sm" data-icon="task_alt">task_alt</span> Result
             </div>
-            <p class="text-on-surface text-sm font-medium">Proposed a supply chain transparency approach that can
-              strengthen trust and visibility in food operations.
-            </p>
+            <p class="text-on-surface text-sm font-medium">Developed an AIoT MVP that connected sensors, edge AI,
+              data processing, and monitoring interfaces.</p>
+          </div>
+        </div>
+        <!-- Project 4 -->
+        <div data-project="scmission-sota" role="button" tabindex="0" aria-expanded="false"
+          class="project-card group bg-surface-container-lowest rounded-3xl p-8 shadow-sm hover:shadow-xl transition-all duration-500 flex flex-col">
+          <div class="mb-6 flex justify-between items-start">
+            <span class="material-symbols-outlined text-primary text-3xl" data-icon="monitoring">monitoring</span>
+            <div class="flex gap-2">
+              <span class="px-2 py-1 bg-surface-container text-xs rounded text-on-surface-variant">Production Planning</span>
+              <span class="px-2 py-1 bg-surface-container text-xs rounded text-on-surface-variant">Optimization</span>
+            </div>
+          </div>
+          <h3 class="text-xl font-bold font-headline mb-4 group-hover:text-primary transition-colors">Production Planning
+            &amp; Operations Optimization — SCMission 2026</h3>
+          <p class="text-on-surface-variant text-sm mb-6 flex-grow leading-relaxed">Team Project · Top 20 — SCMission
+            2026. Developed an end-to-end operational plan for a Vietnamese toy manufacturer.</p>
+          <div class="mb-6">
+            <p class="text-xs font-semibold text-primary uppercase tracking-wider mb-3">Skills</p>
+            <div class="flex flex-wrap gap-2">
+              <span class="px-3 py-1 bg-primary-container text-on-primary-container rounded-full text-xs font-medium">Production Planning</span>
+              <span class="px-3 py-1 bg-primary-container text-on-primary-container rounded-full text-xs font-medium">Capacity Analysis</span>
+              <span class="px-3 py-1 bg-primary-container text-on-primary-container rounded-full text-xs font-medium">MPS &amp; MRP</span>
+              <span class="px-3 py-1 bg-primary-container text-on-primary-container rounded-full text-xs font-medium">Scenario Analysis</span>
+            </div>
+          </div>
+          <div class="pt-6 border-t border-outline-variant/10">
+            <div class="flex items-center gap-2 text-xs font-semibold text-primary uppercase tracking-wider mb-2">
+              <span class="material-symbols-outlined text-sm" data-icon="task_alt">task_alt</span> Result
+            </div>
+            <p class="text-on-surface text-sm font-medium">Developed a coordinated recovery plan across production,
+              inventory, logistics, and service decisions.</p>
           </div>
         </div>
       </div>
-      <article id="project-detail" class="hidden mt-10 bg-surface-container-low rounded-[2.5rem] p-6 md:p-10 shadow-sm" aria-live="polite">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
+      <article id="project-detail" class="hidden fixed inset-0 z-[100] overflow-y-auto bg-slate-900/50 p-4 md:p-10" aria-live="polite" role="dialog" aria-modal="true" aria-labelledby="project-detail-title">
+        <button id="project-detail-close" type="button" class="absolute top-5 right-5 z-10 w-11 h-11 rounded-full bg-white text-on-surface shadow-md hover:bg-primary-container transition-colors flex items-center justify-center" aria-label="Close project details">
+          <span class="material-symbols-outlined" data-icon="close">close</span>
+        </button>
+        <div class="max-w-[90rem] min-h-[calc(100vh-2rem)] mx-auto bg-surface-container-low rounded-[2.5rem] p-6 md:p-12 shadow-2xl">
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
           <div class="space-y-6">
-            <button id="project-detail-close" type="button" class="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:underline">
-              <span class="material-symbols-outlined text-base" data-icon="close">close</span> Close project details
-            </button>
             <div><div id="project-detail-tags" class="flex flex-wrap gap-2 mb-4"></div><h3 id="project-detail-title" class="text-3xl font-bold font-headline text-on-surface"></h3></div>
-            <p id="project-detail-description" class="text-on-surface-variant leading-relaxed"></p>
+            <div id="project-detail-description" class="space-y-4 text-on-surface-variant leading-relaxed"></div>
             <div><p class="text-xs font-semibold text-primary uppercase tracking-wider mb-3">Skills</p><div id="project-detail-skills" class="flex flex-wrap gap-2"></div></div>
             <div class="pt-6 border-t border-outline-variant/20"><p class="text-xs font-semibold text-primary uppercase tracking-wider mb-2">Result</p><p id="project-detail-result" class="text-on-surface font-medium"></p></div>
+            <p id="project-detail-acknowledgment" class="text-sm italic text-on-surface-variant"></p>
           </div>
-          <div class="space-y-4">
-            <div id="project-gallery" class="relative aspect-[4/3] rounded-2xl overflow-hidden bg-surface-container-highest"></div>
+          <div class="space-y-4 min-w-0">
+            <div id="project-gallery" class="relative z-0 aspect-[4/3] rounded-2xl overflow-hidden bg-surface-container-highest"></div>
             <div id="project-gallery-thumbs" class="flex gap-3 overflow-x-auto py-1"></div>
-            <p class="text-xs text-on-surface-variant">Project images will be added here.</p>
+            <p class="text-xs text-on-surface-variant">Project images, videos, and certificates.</p>
+            <div id="project-detail-resources" class="pt-4 border-t border-outline-variant/20">
+              <p class="text-xs font-semibold text-primary uppercase tracking-wider mb-3">Project Resources</p>
+              <div id="project-detail-links" class="flex flex-wrap gap-3"></div>
+            </div>
+          </div>
           </div>
         </div>
       </article>
     </section>
     <!-- Experience & Involvement -->
-    <section class="py-24" id="experience">
+    <section class="py-16" id="experience">
       <h2 class="text-3xl font-bold font-headline mb-16">Experience &amp; Involvement</h2>
       <div class="space-y-12 max-w-3xl">
         <div
@@ -515,16 +644,18 @@
           <div>
             <span class="text-primary font-bold text-sm">12/2025 – Now</span>
             <h3 class="text-xl font-bold mt-1">Academic Affairs Member — CTD, UEH</h3>
-            <p class="text-on-surface-variant mt-2 font-medium">Optimization Models &amp; Academic Support</p>
-            <p class="text-on-surface-variant mt-2 text-sm leading-relaxed">Supported Youth Union and faculty
-              activities at CTD, UEH.</p>
+            <p class="text-on-surface-variant mt-2 font-medium">Academic Support</p>
+            <p class="text-on-surface-variant mt-2 text-sm leading-relaxed">Supported academic activities and student
+              engagement at CTD, UEH.</p>
           </div>
         </div>
       </div>
     </section>
     <!-- Skills Section -->
-    <section class="py-24 bg-surface rounded-[3rem]" id="skills">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+    <section class="relative overflow-hidden py-24 bg-surface rounded-[3rem]" id="skills">
+      <h2 class="sr-only">Skills</h2>
+      <div aria-hidden="true" class="absolute inset-x-0 -top-4 text-center font-headline text-[3rem] md:text-[6rem] font-black tracking-[0.08em] text-primary/25 select-none leading-none">SKILLS</div>
+      <div class="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-8">
         <div class="space-y-6">
           <div class="flex items-center gap-3">
             <span class="material-symbols-outlined text-primary" data-icon="factory">factory</span>
@@ -533,7 +664,7 @@
           <div class="flex flex-wrap gap-2">
             <span class="px-4 py-2 bg-primary-container text-on-primary-container rounded-full text-sm font-medium">Production Planning</span>
             <span class="px-4 py-2 bg-primary-container text-on-primary-container rounded-full text-sm font-medium">Production Scheduling</span>
-            <span class="px-4 py-2 bg-primary-container text-on-primary-container rounded-full text-sm font-medium">Capacity &amp; Resource Planning</span>
+            <span class="px-4 py-2 bg-primary-container text-on-primary-container rounded-full text-sm font-medium">Material Planning</span>
             <span class="px-4 py-2 bg-primary-container text-on-primary-container rounded-full text-sm font-medium">Process Analysis</span>
             <span class="px-4 py-2 bg-primary-container text-on-primary-container rounded-full text-sm font-medium">Supply Chain Operations</span>
           </div>
@@ -546,7 +677,6 @@
           <div class="flex flex-wrap gap-2">
             <span class="px-4 py-2 bg-surface-container-highest rounded-full text-sm font-medium">Microsoft Excel</span>
             <span class="px-4 py-2 bg-surface-container-highest rounded-full text-sm font-medium">Power BI</span>
-            <span class="px-4 py-2 bg-surface-container-highest rounded-full text-sm font-medium">SQL / PostgreSQL</span>
             <span class="px-4 py-2 bg-surface-container-highest rounded-full text-sm font-medium">Data Analysis &amp; Visualization</span>
           </div>
         </div>
@@ -557,9 +687,9 @@
           </div>
           <div class="flex flex-wrap gap-2">
             <span class="px-4 py-2 bg-primary-container text-on-primary-container rounded-full text-sm font-medium">Python</span>
+            <span class="px-4 py-2 bg-primary-container text-on-primary-container rounded-full text-sm font-medium">Software Development</span>
             <span class="px-4 py-2 bg-primary-container text-on-primary-container rounded-full text-sm font-medium">IBM CPLEX</span>
             <span class="px-4 py-2 bg-primary-container text-on-primary-container rounded-full text-sm font-medium">MATLAB</span>
-            <span class="px-4 py-2 bg-primary-container text-on-primary-container rounded-full text-sm font-medium">Optimization Modeling</span>
           </div>
         </div>
         <div class="space-y-6">
@@ -577,7 +707,7 @@
       </div>
     </section>
     <!-- Awards & Career Direction -->
-    <section class="py-24 grid grid-cols-1 md:grid-cols-2 gap-16">
+    <section class="py-16 grid grid-cols-1 md:grid-cols-2 gap-16">
       <div class="space-y-8">
         <h2 class="text-2xl font-bold font-headline">Certifications &amp; Honors</h2>
         <div class="space-y-4">
@@ -602,6 +732,30 @@
               <p class="text-sm text-on-surface-variant">Student Academic Achievement</p>
             </div>
           </div>
+          <div class="flex gap-4 items-center">
+            <span class="material-symbols-outlined text-primary" data-icon="workspace_premium">workspace_premium</span>
+            <div>
+              <p class="font-bold">Top 20 — SCmission 2026: The Vanguard</p>
+              <p class="text-sm text-on-surface-variant">Business Case Competition in Logistics &amp; Supply Chain Management · Team SOTA</p>
+            </div>
+          </div>
+        </div>
+        <div class="pt-2">
+          <p class="text-xs font-semibold text-primary uppercase tracking-wider mb-4">Project Certificates</p>
+          <div class="grid grid-cols-4 gap-3">
+            <a href="assets/projects/robot_bird_nest/bird-nest-05.jpg" target="_blank" rel="noopener noreferrer" class="group block overflow-hidden rounded-xl bg-surface-container-highest">
+              <img src="assets/projects/robot_bird_nest/bird-nest-05.jpg" alt="Autonomous Monitoring Robot project certificate" class="w-full aspect-square object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy">
+            </a>
+            <a href="assets/projects/robot_chalange/picking-robot-certificate.png" target="_blank" rel="noopener noreferrer" class="group block overflow-hidden rounded-xl bg-surface-container-highest">
+              <img src="assets/projects/robot_chalange/picking-robot-certificate.png" alt="Autonomous Picking Robot certificate" class="w-full aspect-square object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy">
+            </a>
+            <a href="assets/projects/AIoT/aiot-certificate.jpg" target="_blank" rel="noopener noreferrer" class="group block overflow-hidden rounded-xl bg-surface-container-highest">
+              <img src="assets/projects/AIoT/aiot-certificate.jpg" alt="AIoT project certificate" class="w-full aspect-square object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy">
+            </a>
+            <a href="assets/projects/scmission/scmission-certificate.png" target="_blank" rel="noopener noreferrer" class="group block overflow-hidden rounded-xl bg-surface-container-highest">
+              <img src="assets/projects/scmission/scmission-certificate.png" alt="SCMission certificate" class="w-full aspect-square object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy">
+            </a>
+          </div>
         </div>
       </div>
       <div
@@ -623,7 +777,7 @@
       </div>
     </section>
     <!-- Resume Snapshot -->
-    <section class="py-24">
+    <section class="py-16">
       <div class="bg-surface-container-lowest rounded-3xl p-10 shadow-sm border border-outline-variant/5">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div class="md:col-span-1 border-b md:border-b-0 md:border-r border-outline-variant/10 pb-8 md:pb-0 md:pr-8">
@@ -651,7 +805,7 @@
       </div>
     </section>
     <!-- Contact Section -->
-    <section class="pt-32 pb-8 text-center" id="contact">
+    <section class="pt-20 pb-8 text-center" id="contact">
       <div class="max-w-3xl mx-auto space-y-12">
         <h2 class="text-5xl font-extrabold font-headline tracking-tight">Let's Connect</h2>
         <p class="text-xl text-on-surface-variant">I am interested in internship and entry-level opportunities in
@@ -767,25 +921,86 @@
     (() => {
       const projects = {
         'bird-nest': {
-          title: 'Bird’s Nest Monitoring Robot',
-          tags: ['Robot System', 'Monitoring'],
-          description: 'Researched and designed a monitoring solution for indoor bird’s nest houses, focusing on how operational data can support environmental control and day-to-day supervision.',
-          skills: ['Operational Monitoring', 'Process Observation', 'Data Analysis', 'IoT'],
-          result: 'Built a practical monitoring approach that supports better observation and operational management.'
+          title: 'Autonomous Monitoring Robot & AI-Based Inspection System — Seoul Smart City Prize 2025 & NNCT UEH 2025',
+          tags: ['Research Project', 'Seoul Smart City Prize 2025 Submission & Nhà nghiên cứu trẻ UEH 2025'],
+          skills: ['Robotics', 'Autonomous Navigation', 'Path Planning', 'Process Automation', 'Point Cloud Analysis', 'AI Applications', 'System Design', 'Problem Solving'],
+          result: 'Developed and tested an integrated robotic monitoring system capable of autonomous movement, path planning, obstacle avoidance, AI-supported nest inspection, and automatic charging. The PointNet++ classification experiment achieved approximately 85.5% accuracy across the reported dataset, while performance decreased to around 76.9% in darker conditions, highlighting lighting and sensing robustness as key areas for further improvement.',
+          detailsHtml: `<p>Developed an autonomous robotic monitoring system to address the limitations of manual inspection in dark, humid, and difficult-to-access swiftlet houses, where repeated human entry can be inefficient and disruptive to the operating environment.</p>
+            <p>The project combined <strong>mobile robotics, autonomous navigation, depth sensing, AI-based classification, and automatic charging</strong> to create a more consistent and scalable monitoring approach.</p>
+            <div><p class="font-semibold text-on-surface mb-2">Key Problems Solved</p><ul class="list-disc pl-5 space-y-2"><li>Designed a mobile robotic system to reduce repetitive manual inspection in difficult indoor environments.</li><li>Applied path planning and obstacle-avoidance logic to support autonomous movement inside the monitoring area.</li><li>Developed an adjustable camera mechanism to inspect nests located at different heights and positions.</li><li>Integrated an Intel RealSense D415 depth camera to collect 3D point-cloud data for nest localization and analysis.</li><li>Applied PointNet++ to classify different nest conditions and support AI-based inspection.</li><li>Designed an automatic charging concept so the robot could return to a docking station when battery level became low.</li><li>Connected mobility, sensing, AI inspection, and monitoring into a single automated system concept.</li></ul></div>`,
+          acknowledgment: 'I sincerely thank my teammates and instructors for their collaboration, feedback, and support throughout the research and development process.',
+          media: [
+            { type: 'image', src: 'assets/projects/robot_bird_nest/bird-nest-05.jpg' },
+            { type: 'image', src: 'assets/projects/robot_bird_nest/bird-nest-04.jpg' },
+            { type: 'image', src: 'assets/projects/robot_bird_nest/bird-nest-dashboard-01.png' },
+            { type: 'image', src: 'assets/projects/robot_bird_nest/bird-nest-dashboard-02.png' },
+            { type: 'image', src: 'assets/projects/robot_bird_nest/bird-nest-dashboard-03.png' },
+            { type: 'image', src: 'assets/projects/robot_bird_nest/bird-nest-01.jpg' },
+            { type: 'image', src: 'assets/projects/robot_bird_nest/bird-nest-02.jpg' },
+            { type: 'image', src: 'assets/projects/robot_bird_nest/bird-nest-03.jpg' }
+          ],
+          resources: { projectUrl: '', fileUrl: 'assets/projects/robot_bird_nest/RobotYen(1)_Korea.docx' }
         },
         'picking-robot': {
-          title: 'Autonomous Picking Robot',
-          tags: ['Automation', 'AI'],
-          description: 'Developed a smart picking concept inspired by factory operations, using computer vision to improve object identification and support more efficient task execution.',
-          skills: ['Workflow Analysis', 'Automation', 'Computer Vision', 'Process Improvement'],
-          result: 'Explored how AI-based automation can support operational accuracy and workflow efficiency.'
+          title: 'Autonomous Picking Robot — Robot Challenge 2025',
+          tags: ['Competition Project', 'Robot Challenge 2025'],
+          skills: ['Robotics', 'Automation', 'Computer Vision', 'System Testing', 'Workflow Analysis', 'Problem Solving'],
+          result: 'Built and tested a working autonomous picking robot prototype for the competition. The project demonstrated how basic automation and computer vision can be combined to support object identification and task execution.',
+          detailsHtml: `<p>Developed a small autonomous picking robot prototype for Robot Challenge 2025. The project focused on applying robotics and computer vision in a practical competition setting.</p>
+            <p>The system was designed to identify objects, perform basic picking tasks, and test how automated movement and visual recognition could work together in a controlled workflow.</p>
+            <div><p class="font-semibold text-on-surface mb-2">Key Problems Solved</p><ul class="list-disc pl-5 space-y-2"><li>Designed and assembled a robot prototype for autonomous picking tasks.</li><li>Applied computer vision to support object identification during operation.</li><li>Tested the workflow between sensing, movement, and picking actions.</li><li>Improved the prototype through repeated system testing and team iteration.</li></ul></div>`,
+          acknowledgment: 'I am grateful to my teammates and instructors for sharing ideas, testing the concept, and supporting each stage of the project.',
+          media: [
+            { type: 'image', src: 'assets/projects/robot_chalange/picking-robot-certificate.png' },
+            { type: 'video', src: 'assets/projects/robot_chalange/picking-robot-demo-01.mp4' },
+            { type: 'video', src: 'assets/projects/robot_chalange/picking-robot-demo-02.mp4' },
+            { type: 'image', src: 'assets/projects/robot_chalange/picking-robot-01.jpg' },
+            { type: 'image', src: 'assets/projects/robot_chalange/picking-robot-02.jpg' },
+            { type: 'image', src: 'assets/projects/robot_chalange/picking-robot-03.jpg' },
+            { type: 'image', src: 'assets/projects/robot_chalange/picking-robot-04.jpg' },
+            { type: 'image', src: 'assets/projects/robot_chalange/picking-robot-05.jpg' },
+            { type: 'image', src: 'assets/projects/robot_chalange/picking-robot-06.jpg' }
+          ],
+          resources: { projectUrl: '', fileUrl: '' }
         },
         'food-supply-chain': {
-          title: 'AI, IoT & Blockchain for Food Supply Chain',
-          tags: ['Supply Chain Tech', 'AI', 'IoT'],
-          description: 'Researched the use of AI, IoT, and blockchain in food supply chains to improve information transparency, traceability, and coordination across supply chain activities.',
-          skills: ['Process Analysis', 'Traceability', 'Information Flow', 'Supply Chain Visibility'],
-          result: 'Proposed a supply chain transparency approach that can strengthen trust and visibility in food operations.'
+          title: 'AIoT-Based Operational Monitoring & Product Verification — CTD Scholars 2025',
+          tags: ['Team Research Project', 'Award B — CTD Scholars 2025'],
+          skills: ['Operational Monitoring', 'IoT', 'Computer Vision', 'System Integration', 'Data Analysis', 'Real-Time Monitoring', 'AI Applications', 'Research & Experimentation'],
+          result: 'Developed a working MVP connecting sensors, edge AI, API/data processing, and monitoring interfaces. The selected 3D-CNN configuration achieved approximately 94.9% accuracy and 97.9% ROC-AUC in the reported experiments. The IoT pilot also demonstrated stable real-time data collection with 98.27% uptime and 0% packet loss in the test environment.',
+          detailsHtml: `<p>Developed an AIoT-based prototype to address a key problem in cold-chain operations: <strong>physical product conditions and monitoring data may be inaccurate or incomplete before they enter digital traceability systems</strong>.</p>
+            <p>The project combined <strong>IoT sensors, computer vision, AI models, and an information system</strong> to monitor storage conditions, detect abnormal product changes, estimate remaining shelf life, and improve operational visibility across the cold-chain process.</p>
+            <div><p class="font-semibold text-on-surface mb-2">Key Problems Solved</p><ul class="list-disc pl-5 space-y-2"><li>Built a real-time monitoring approach for <strong>temperature and humidity</strong> during storage and transportation.</li><li>Converted temperature history into <strong>Remaining Shelf Life (RSL)</strong> and <strong>Time to Expire (TTE)</strong> indicators to support product-condition monitoring.</li><li>Applied computer vision and AI to identify <strong>abnormal changes and possible product swapping</strong> between different stages of the supply chain.</li><li>Connected sensor and AI outputs into an end-to-end information flow for monitoring, alerting, and traceability.</li><li>Designed the system architecture so verified operational data could later be connected to blockchain-based traceability.</li></ul></div>`,
+          acknowledgment: 'My sincere thanks go to my teammates and instructors for their valuable contributions, discussion, and guidance during this project.',
+          media: [
+            { type: 'image', src: 'assets/projects/AIoT/aiot-research-03.jpg' },
+            { type: 'image', src: 'assets/projects/AIoT/aiot-research-02.jpg' },
+            { type: 'image', src: 'assets/projects/AIoT/aiot-certificate.jpg' },
+            { type: 'image', src: 'assets/projects/AIoT/aiot-research-01.jpg' },
+            { type: 'image', src: 'assets/projects/AIoT/aiot-dashboard-01.png' },
+            { type: 'image', src: 'assets/projects/AIoT/aiot-dashboard-02.png' },
+            { type: 'image', src: 'assets/projects/AIoT/aiot-dashboard-03.png' }
+          ],
+          resources: { projectUrl: 'assets/projects/AIoT/CTD.NCKH.SV.2025.DT074 - Tân Hồng Phong - File toàn văn Có GVHD.pdf', fileUrl: '' }
+        },
+        'scmission-sota': {
+          title: 'Production Planning & End-to-End Operations Optimization — SCMission 2026',
+          tags: ['Team Project', 'Top 20 — SCMission 2026'],
+          skills: ['Production Planning', 'Capacity Analysis', 'Bottleneck Analysis', 'MPS & MRP', 'Production Scheduling', 'Operations Optimization', 'Scenario Analysis', 'Problem Solving'],
+          result: 'Identified production capacity as a major constraint, prioritized high-value demand under shared-resource limitations, and developed a coordinated recovery approach for supply disruption. The project demonstrated how production, inventory, logistics, and service decisions need to be planned together rather than optimized independently.',
+          detailsHtml: `<p>Worked on an end-to-end operations case for a Vietnamese toy manufacturer facing <strong>demand variability, limited production capacity, material constraints, and supply chain disruptions</strong> across the US, UK, and Australia.</p>
+            <p>The project focused on converting customer demand into a feasible operational plan by connecting <strong>production capacity, material availability, inventory, shipment requirements, and service priorities</strong>.</p>
+            <div><p class="font-semibold text-on-surface mb-2">Key Problems Solved</p><ul class="list-disc pl-5 space-y-2"><li>Developed production planning logic for multiple SKUs sharing limited fixture capacity, prioritizing critical demand while identifying production bottlenecks and shortages.</li><li>Connected <strong>MPS, material planning, inventory, and production scheduling</strong> to support a more feasible production plan.</li><li>Analyzed a PCBA quality disruption that temporarily restricted production and redesigned the recovery plan by balancing production continuity, shortage reduction, service level, and recovery cost.</li><li>Extended production output into a distribution plan across multiple markets and DCs, considering shipment timing, container utilization, lead time, and total landed cost.</li><li>Evaluated port-congestion disruption scenarios and compared sea freight, airfreight, and split-shipment recovery options.</li></ul></div>`,
+          acknowledgment: 'I appreciate the support and collaboration of my teammates and instructors throughout the case analysis and dashboard development process.',
+          media: [
+            { type: 'image', src: 'assets/projects/scmission/scmission-certificate.png' },
+            { type: 'image', src: 'assets/projects/scmission/scmission-team-meeting.png' }
+          ],
+          resources: {
+            projectUrl: 'https://drive.google.com/drive/folders/1aTld6rvJhJ_1UjV8ME366eb4pPDkkcmE?usp=sharing',
+            projectLabel: 'View Materials',
+            fileUrl: ''
+          }
         }
       };
 
@@ -797,6 +1012,9 @@
       const result = document.getElementById('project-detail-result');
       const tags = document.getElementById('project-detail-tags');
       const skills = document.getElementById('project-detail-skills');
+      const acknowledgment = document.getElementById('project-detail-acknowledgment');
+      const links = document.getElementById('project-detail-links');
+      const resourcesSection = document.getElementById('project-detail-resources');
       const gallery = document.getElementById('project-gallery');
       const thumbs = document.getElementById('project-gallery-thumbs');
       let activeProject = null;
@@ -805,11 +1023,17 @@
 
       const pill = (label, style) => `<span class="${style}">${label}</span>`;
 
-      function renderGallery(projectTitle) {
-        const slides = [1, 2, 3, 4];
+      function renderGallery(project) {
+        const slides = project.media || [];
         activeSlide = 0;
-        gallery.innerHTML = slides.map((number, index) => `<div class="project-slide ${index === 0 ? 'is-active' : ''} absolute inset-0 items-center justify-center bg-gradient-to-br from-primary-container to-surface-container-high text-center p-8"><div><span class="material-symbols-outlined text-primary text-5xl" data-icon="image">image</span><p class="mt-3 font-semibold text-on-surface">${projectTitle}</p><p class="text-sm text-on-surface-variant">Image ${number} placeholder</p></div></div>`).join('');
-        thumbs.innerHTML = slides.map((number, index) => `<button type="button" data-slide="${index}" class="gallery-thumb ${index === 0 ? 'is-active' : ''} shrink-0 w-20 h-14 rounded-lg bg-surface-container-highest text-xs font-semibold text-on-surface-variant">Image ${number}</button>`).join('');
+        gallery.innerHTML = slides.map((media, index) => `<div class="project-slide ${index === 0 ? 'is-active' : ''} absolute inset-0 items-center justify-center bg-surface-container-high">${media.type === 'video'
+          ? `<video class="w-full h-full object-contain" controls preload="metadata"><source src="${media.src}" type="video/mp4">Your browser does not support video playback.</video>`
+          : `<img src="${media.src}" alt="${project.title} — image ${index + 1}" class="w-full h-full object-contain" loading="lazy">`
+        }</div>`).join('');
+        thumbs.innerHTML = slides.map((media, index) => `<button type="button" data-slide="${index}" class="gallery-thumb ${index === 0 ? 'is-active' : ''} shrink-0 w-20 h-14 rounded-lg overflow-hidden bg-surface-container-highest" aria-label="View ${media.type} ${index + 1}">${media.type === 'video'
+          ? '<span class="w-full h-full flex items-center justify-center text-primary"><span class="material-symbols-outlined" data-icon="play_circle">play_circle</span></span>'
+          : `<img src="${media.src}" alt="" class="w-full h-full object-cover" loading="lazy">`
+        }</button>`).join('');
         thumbs.querySelectorAll('.gallery-thumb').forEach(button => button.addEventListener('click', () => {
           showSlide(Number(button.dataset.slide));
           startGalleryAutoplay();
@@ -822,6 +1046,10 @@
         activeSlide = (index + slides.length) % slides.length;
         slides.forEach((slide, itemIndex) => slide.classList.toggle('is-active', itemIndex === activeSlide));
         thumbs.querySelectorAll('.gallery-thumb').forEach((thumb, itemIndex) => thumb.classList.toggle('is-active', itemIndex === activeSlide));
+        if (slides[activeSlide].querySelector('video')) {
+          window.clearInterval(galleryTimer);
+          galleryTimer = null;
+        }
       }
 
       function startGalleryAutoplay() {
@@ -834,20 +1062,26 @@
         if (!project) return;
         activeProject = id;
         title.textContent = project.title;
-        description.textContent = project.description;
+        description.innerHTML = project.detailsHtml || project.story.map(paragraph => `<p>${paragraph}</p>`).join('');
         result.textContent = project.result;
+        acknowledgment.textContent = project.acknowledgment;
+        const resourceItems = [
+          { label: project.resources.projectLabel || 'View Project', icon: 'open_in_new', url: project.resources.projectUrl, download: false },
+          { label: 'Download File', icon: 'download', url: project.resources.fileUrl, download: true }
+        ].filter(resource => resource.url);
+        links.innerHTML = resourceItems.map(resource => `<a href="${resource.url}" ${resource.download ? 'download' : 'target="_blank" rel="noopener noreferrer"'} class="inline-flex items-center gap-2 px-4 py-3 rounded-xl bg-primary text-on-primary text-sm font-semibold hover:bg-primary-dim transition-colors"><span class="material-symbols-outlined text-base" data-icon="${resource.icon}">${resource.icon}</span>${resource.label}</a>`).join('');
+        resourcesSection.classList.toggle('hidden', resourceItems.length === 0);
         tags.innerHTML = project.tags.map(tag => pill(tag, 'px-3 py-1 bg-surface-container-highest rounded-full text-xs font-medium text-on-surface-variant')).join('');
         skills.innerHTML = project.skills.map(skill => pill(skill, 'px-3 py-1 bg-primary-container text-on-primary-container rounded-full text-xs font-medium')).join('');
-        renderGallery(project.title);
+        renderGallery(project);
         startGalleryAutoplay();
         detail.classList.remove('hidden');
-        list.classList.add('project-list-compact');
+        document.body.classList.add('overflow-hidden');
         cards.forEach(card => {
           const selected = card.dataset.project === id;
           card.classList.toggle('is-selected', selected);
           card.setAttribute('aria-expanded', String(selected));
         });
-        detail.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
 
       function closeProject() {
@@ -855,7 +1089,7 @@
         window.clearInterval(galleryTimer);
         galleryTimer = null;
         detail.classList.add('hidden');
-        list.classList.remove('project-list-compact');
+        document.body.classList.remove('overflow-hidden');
         cards.forEach(card => {
           card.classList.remove('is-selected');
           card.setAttribute('aria-expanded', 'false');
@@ -872,6 +1106,8 @@
         });
       });
       document.getElementById('project-detail-close').addEventListener('click', closeProject);
+      detail.addEventListener('click', event => { if (event.target === detail) closeProject(); });
+      document.addEventListener('keydown', event => { if (event.key === 'Escape' && activeProject) closeProject(); });
       let touchStartX = null;
       gallery.addEventListener('touchstart', event => { touchStartX = event.changedTouches[0].screenX; }, { passive: true });
       gallery.addEventListener('touchend', event => {
@@ -883,6 +1119,41 @@
         }
         touchStartX = null;
       }, { passive: true });
+    })();
+  </script>
+  <script>
+    (() => {
+      const strip = document.querySelector('.project-image-strip');
+      if (!strip) return;
+
+      let paused = false;
+      let resumeTimer;
+      const pause = () => {
+        paused = true;
+        window.clearTimeout(resumeTimer);
+      };
+      const resume = () => {
+        window.clearTimeout(resumeTimer);
+        resumeTimer = window.setTimeout(() => { paused = false; }, 900);
+      };
+      const autoScroll = () => {
+        if (!paused && strip.scrollWidth > strip.clientWidth) {
+          if (strip.scrollLeft >= strip.scrollWidth - strip.clientWidth - 1) {
+            strip.scrollLeft = 0;
+          } else {
+            strip.scrollLeft += 0.7;
+          }
+        }
+        window.requestAnimationFrame(autoScroll);
+      };
+
+      strip.addEventListener('mouseenter', pause);
+      strip.addEventListener('mouseleave', resume);
+      strip.addEventListener('pointerdown', pause);
+      strip.addEventListener('pointerup', resume);
+      strip.addEventListener('touchstart', pause, { passive: true });
+      strip.addEventListener('touchend', resume, { passive: true });
+      window.requestAnimationFrame(autoScroll);
     })();
   </script>
 </body>
