@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-  <title>Tan Hong Phong | Logistics Operations &amp; Supply Chain Technology Portfolio</title>
+  <title>Tan Hong Phong | Production Planning &amp; Manufacturing Operations Portfolio</title>
   <link rel="icon" type="image/png" href="Gemini_Generated_Image_xypq5xxypq5xxypq-removebg-preview.png">
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <link
@@ -109,6 +109,51 @@
         grid-template-columns: 1fr;
       }
     }
+
+    .project-card {
+      cursor: pointer;
+    }
+
+    .project-card:focus-visible {
+      outline: 3px solid #4c6456;
+      outline-offset: 4px;
+    }
+
+    .project-list-compact .project-card > p,
+    .project-list-compact .project-card > .mb-6:not(:first-child),
+    .project-list-compact .project-card > .pt-6 {
+      display: none;
+    }
+
+    .project-list-compact .project-card {
+      min-height: 0;
+      padding: 1.5rem;
+    }
+
+    .project-list-compact .project-card .mb-6 {
+      margin-bottom: 1rem;
+    }
+
+    .project-list-compact .project-card h3 {
+      margin-bottom: 0;
+    }
+
+    .project-card.is-selected {
+      border: 2px solid #4c6456;
+    }
+
+    .project-slide {
+      display: none !important;
+    }
+
+    .project-slide.is-active {
+      display: flex !important;
+    }
+
+    .gallery-thumb.is-active {
+      outline: 3px solid #4c6456;
+      outline-offset: 2px;
+    }
   </style>
 </head>
 
@@ -205,15 +250,15 @@
       <div class="space-y-10 w-fit max-w-3xl bg-black/40 backdrop-blur-md p-8 md:p-12 rounded-[2.5rem] shadow-2xl border border-white/20">
         <span
           class="text-white/90 font-label text-xs font-semibold tracking-widest uppercase inline-block bg-white/10 px-5 py-2 rounded-full backdrop-blur-md border border-white/20 shadow-sm">Logistics
-          Technology Student</span>
+          Production Planning &amp; Manufacturing Operations</span>
         <h1
           class="text-3xl md:text-6xl font-extrabold font-headline leading-[1.1] tracking-tight text-white whitespace-nowrap" style="text-shadow: 0 2px 10px rgba(0,0,0,0.3);">
           TAN HONG <span class="text-[#cee9d6]"> PHONG</span>
         </h1>
         <p class="text-lg md:text-xl text-white/90 max-w-lg leading-relaxed font-medium" style="text-shadow: 0 1px 3px rgba(0,0,0,0.5);">
-          I am a Logistics Technology student at UEH with a strong interest in logistics operations, planning, and
-          supply chain technology. My goal is to build a career in S&OP, Planning, or logistics functions by combining
-          operational thinking, analytical problem-solving, and practical applications of AI.
+          Logistics Technology student at UEH interested in improving manufacturing operations through planning, data
+          analysis, optimization, AI, and applied technology. I am particularly interested in production scheduling,
+          capacity planning, resource allocation, and data-driven operational improvement.
         </p>
         <div class="flex flex-wrap gap-4 pt-4">
           <a class="bg-primary text-on-primary px-8 py-4 rounded-full font-semibold transition-all hover:bg-primary-dim shadow-lg shadow-primary/20"
@@ -236,15 +281,16 @@
         </div>
         <div class="space-y-6 text-lg text-on-surface-variant leading-relaxed">
           <p>
-            As a Logistics Technology student at the University of Economics Ho Chi Minh City, I focus on logistics
-            operations, planning activities, and the role of technology in improving supply chain performance. I am
-            especially interested in how businesses can make better operational decisions through structured analysis,
-            coordination, and process visibility.
+            As a Logistics Technology student at the University of Economics Ho Chi Minh City, I am building my career
+            direction around production planning, manufacturing operations, and process improvement. I am particularly
+            interested in how factories can improve operational performance through better planning, data visibility,
+            resource coordination, and structured decision-making.
           </p>
           <p>
-            My academic and project experience has helped me explore supply chain technology, AI applications, and
-            optimization models in practical settings. I aim to apply these foundations to roles in S&OP, Planning, or
-            logistics operations, where data, coordination, and execution need to work together effectively.
+            My academic and project experience has allowed me to work with optimization models, data analysis, AI
+            applications, and applied technology in operational contexts. I aim to use these capabilities to support
+            production scheduling, capacity planning, resource allocation, and continuous operational improvement in
+            manufacturing environments.
           </p>
         </div>
       </div>
@@ -277,6 +323,16 @@
             </div>
             <span class="text-on-surface-variant font-medium whitespace-nowrap">02/2025 – 06/2025</span>
           </div>
+          <div
+            class="bg-surface-container-lowest p-8 rounded-2xl flex flex-col md:flex-row justify-between items-start gap-4 transition-transform hover:scale-[1.01]">
+            <div>
+              <h3 class="text-xl font-bold font-headline text-on-surface">Rajamangala University of Technology Lanna, Thailand</h3>
+              <p class="text-primary font-medium">International Student Exchange Program — Faculty of Engineering</p>
+              <p class="text-on-surface-variant text-sm mt-2">Joined robotics and automation workshops while gaining
+                international engineering and cultural exchange experience.</p>
+            </div>
+            <span class="text-on-surface-variant font-medium whitespace-nowrap">24/06/2026 – 02/07/2026</span>
+          </div>
         </div>
       </div>
     </section>
@@ -293,20 +349,29 @@
       </div>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
         <!-- Project 1 -->
-        <div
-          class="group bg-surface-container-lowest rounded-3xl p-8 shadow-sm hover:shadow-xl transition-all duration-500 flex flex-col">
+        <div data-project="bird-nest" role="button" tabindex="0" aria-expanded="false"
+          class="project-card group bg-surface-container-lowest rounded-3xl p-8 shadow-sm hover:shadow-xl transition-all duration-500 flex flex-col">
           <div class="mb-6 flex justify-between items-start">
             <span class="material-symbols-outlined text-primary text-3xl" data-icon="warehouse">warehouse</span>
             <div class="flex gap-2">
-              <span class="px-2 py-1 bg-surface-container text-xs rounded text-on-surface-variant">Operations</span>
+              <span class="px-2 py-1 bg-surface-container text-xs rounded text-on-surface-variant">Robot System</span>
               <span class="px-2 py-1 bg-surface-container text-xs rounded text-on-surface-variant">Monitoring</span>
             </div>
           </div>
-          <h3 class="text-xl font-bold font-headline mb-4 group-hover:text-primary transition-colors">Research on Bird’s
-            Nest House Monitoring Robot System</h3>
+          <h3 class="text-xl font-bold font-headline mb-4 group-hover:text-primary transition-colors">Bird’s Nest
+            Monitoring Robot</h3>
           <p class="text-on-surface-variant text-sm mb-6 flex-grow leading-relaxed">Researched and designed a monitoring
             solution for indoor bird’s nest houses, focusing on how operational data can support environmental control
             and day-to-day supervision.</p>
+          <div class="mb-6">
+            <p class="text-xs font-semibold text-primary uppercase tracking-wider mb-3">Skills</p>
+            <div class="flex flex-wrap gap-2">
+              <span class="px-3 py-1 bg-primary-container text-on-primary-container rounded-full text-xs font-medium">Operational Monitoring</span>
+              <span class="px-3 py-1 bg-primary-container text-on-primary-container rounded-full text-xs font-medium">Process Observation</span>
+              <span class="px-3 py-1 bg-primary-container text-on-primary-container rounded-full text-xs font-medium">Data Analysis</span>
+              <span class="px-3 py-1 bg-primary-container text-on-primary-container rounded-full text-xs font-medium">IoT</span>
+            </div>
+          </div>
           <div class="pt-6 border-t border-outline-variant/10">
             <div class="flex items-center gap-2 text-xs font-semibold text-primary uppercase tracking-wider mb-2">
               <span class="material-symbols-outlined text-sm" data-icon="task_alt">task_alt</span> Result
@@ -317,8 +382,8 @@
           </div>
         </div>
         <!-- Project 2 -->
-        <div
-          class="group bg-surface-container-lowest rounded-3xl p-8 shadow-sm hover:shadow-xl transition-all duration-500 flex flex-col">
+        <div data-project="picking-robot" role="button" tabindex="0" aria-expanded="false"
+          class="project-card group bg-surface-container-lowest rounded-3xl p-8 shadow-sm hover:shadow-xl transition-all duration-500 flex flex-col">
           <div class="mb-6 flex justify-between items-start">
             <span class="material-symbols-outlined text-primary text-3xl" data-icon="query_stats">query_stats</span>
             <div class="flex gap-2">
@@ -326,11 +391,20 @@
               <span class="px-2 py-1 bg-surface-container text-xs rounded text-on-surface-variant">AI</span>
             </div>
           </div>
-          <h3 class="text-xl font-bold font-headline mb-4 group-hover:text-primary transition-colors">Autonomous Picking
-            Robot with Computer Vision</h3>
+          <h3 class="text-xl font-bold font-headline mb-4 group-hover:text-primary transition-colors">Autonomous
+            Picking Robot</h3>
           <p class="text-on-surface-variant text-sm mb-6 flex-grow leading-relaxed">Developed a smart picking concept
             inspired by factory operations, using computer vision to improve object identification and support more
             efficient task execution.</p>
+          <div class="mb-6">
+            <p class="text-xs font-semibold text-primary uppercase tracking-wider mb-3">Skills</p>
+            <div class="flex flex-wrap gap-2">
+              <span class="px-3 py-1 bg-primary-container text-on-primary-container rounded-full text-xs font-medium">Workflow Analysis</span>
+              <span class="px-3 py-1 bg-primary-container text-on-primary-container rounded-full text-xs font-medium">Automation</span>
+              <span class="px-3 py-1 bg-primary-container text-on-primary-container rounded-full text-xs font-medium">Computer Vision</span>
+              <span class="px-3 py-1 bg-primary-container text-on-primary-container rounded-full text-xs font-medium">Process Improvement</span>
+            </div>
+          </div>
           <div class="pt-6 border-t border-outline-variant/10">
             <div class="flex items-center gap-2 text-xs font-semibold text-primary uppercase tracking-wider mb-2">
               <span class="material-symbols-outlined text-sm" data-icon="task_alt">task_alt</span> Result
@@ -341,8 +415,8 @@
           </div>
         </div>
         <!-- Project 3 -->
-        <div
-          class="group bg-surface-container-lowest rounded-3xl p-8 shadow-sm hover:shadow-xl transition-all duration-500 flex flex-col">
+        <div data-project="food-supply-chain" role="button" tabindex="0" aria-expanded="false"
+          class="project-card group bg-surface-container-lowest rounded-3xl p-8 shadow-sm hover:shadow-xl transition-all duration-500 flex flex-col">
           <div class="mb-6 flex justify-between items-start">
             <span class="material-symbols-outlined text-primary text-3xl" data-icon="dashboard">dashboard</span>
             <div class="flex gap-2">
@@ -352,11 +426,20 @@
               <span class="px-2 py-1 bg-surface-container text-xs rounded text-on-surface-variant">IoT</span>
             </div>
           </div>
-          <h3 class="text-xl font-bold font-headline mb-4 group-hover:text-primary transition-colors">AI, IoT for
-            Blockchain in Food Supply Chain Transparency</h3>
+          <h3 class="text-xl font-bold font-headline mb-4 group-hover:text-primary transition-colors">AI, IoT &amp;
+            Blockchain for Food Supply Chain</h3>
           <p class="text-on-surface-variant text-sm mb-6 flex-grow leading-relaxed">Researched the use of AI, IoT, and
             blockchain in food supply chains to improve information transparency, traceability, and coordination across
             supply chain activities.</p>
+          <div class="mb-6">
+            <p class="text-xs font-semibold text-primary uppercase tracking-wider mb-3">Skills</p>
+            <div class="flex flex-wrap gap-2">
+              <span class="px-3 py-1 bg-primary-container text-on-primary-container rounded-full text-xs font-medium">Process Analysis</span>
+              <span class="px-3 py-1 bg-primary-container text-on-primary-container rounded-full text-xs font-medium">Traceability</span>
+              <span class="px-3 py-1 bg-primary-container text-on-primary-container rounded-full text-xs font-medium">Information Flow</span>
+              <span class="px-3 py-1 bg-primary-container text-on-primary-container rounded-full text-xs font-medium">Supply Chain Visibility</span>
+            </div>
+          </div>
           <div class="pt-6 border-t border-outline-variant/10">
             <div class="flex items-center gap-2 text-xs font-semibold text-primary uppercase tracking-wider mb-2">
               <span class="material-symbols-outlined text-sm" data-icon="task_alt">task_alt</span> Result
@@ -367,6 +450,24 @@
           </div>
         </div>
       </div>
+      <article id="project-detail" class="hidden mt-10 bg-surface-container-low rounded-[2.5rem] p-6 md:p-10 shadow-sm" aria-live="polite">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
+          <div class="space-y-6">
+            <button id="project-detail-close" type="button" class="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:underline">
+              <span class="material-symbols-outlined text-base" data-icon="close">close</span> Close project details
+            </button>
+            <div><div id="project-detail-tags" class="flex flex-wrap gap-2 mb-4"></div><h3 id="project-detail-title" class="text-3xl font-bold font-headline text-on-surface"></h3></div>
+            <p id="project-detail-description" class="text-on-surface-variant leading-relaxed"></p>
+            <div><p class="text-xs font-semibold text-primary uppercase tracking-wider mb-3">Skills</p><div id="project-detail-skills" class="flex flex-wrap gap-2"></div></div>
+            <div class="pt-6 border-t border-outline-variant/20"><p class="text-xs font-semibold text-primary uppercase tracking-wider mb-2">Result</p><p id="project-detail-result" class="text-on-surface font-medium"></p></div>
+          </div>
+          <div class="space-y-4">
+            <div id="project-gallery" class="relative aspect-[4/3] rounded-2xl overflow-hidden bg-surface-container-highest"></div>
+            <div id="project-gallery-thumbs" class="flex gap-3 overflow-x-auto py-1"></div>
+            <p class="text-xs text-on-surface-variant">Project images will be added here.</p>
+          </div>
+        </div>
+      </article>
     </section>
     <!-- Experience & Involvement -->
     <section class="py-24" id="experience">
@@ -396,6 +497,17 @@
               operations and technology.</p>
           </div>
         </div>
+        <div
+          class="relative pl-12 before:content-[''] before:absolute before:left-[11px] before:top-2 before:bottom-0 before:w-[2px] before:bg-surface-container-highest">
+          <div class="absolute left-0 top-1 w-6 h-6 bg-surface-dim rounded-full border-4 border-background"></div>
+          <div>
+            <span class="text-on-surface-variant font-bold text-sm">24/06/2026 – 02/07/2026</span>
+            <h3 class="text-xl font-bold mt-1">International Student Exchange Program</h3>
+            <p class="text-on-surface-variant mt-2 font-medium">Faculty of Engineering, Rajamangala University of Technology Lanna, Thailand</p>
+            <p class="text-on-surface-variant mt-2 text-sm leading-relaxed">Joined robotics and automation workshops
+              while gaining international engineering and cultural exchange experience.</p>
+          </div>
+        </div>
         <div class="relative pl-12">
           <div
             class="absolute left-0 top-1 w-6 h-6 bg-primary rounded-full border-4 border-background flex items-center justify-center">
@@ -404,67 +516,62 @@
             <span class="text-primary font-bold text-sm">12/2025 – Now</span>
             <h3 class="text-xl font-bold mt-1">Academic Affairs Member — CTD, UEH</h3>
             <p class="text-on-surface-variant mt-2 font-medium">Optimization Models &amp; Academic Support</p>
-            <p class="text-on-surface-variant mt-2 text-sm leading-relaxed">Researched and developed optimization models
-              for logistics-related problems while supporting academic activities, helping strengthen my planning
-              mindset and analytical approach.</p>
+            <p class="text-on-surface-variant mt-2 text-sm leading-relaxed">Supported Youth Union and faculty
+              activities at CTD, UEH.</p>
           </div>
         </div>
       </div>
     </section>
     <!-- Skills Section -->
     <section class="py-24 bg-surface rounded-[3rem]" id="skills">
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
         <div class="space-y-6">
           <div class="flex items-center gap-3">
-            <span class="material-symbols-outlined text-primary" data-icon="terminal">terminal</span>
-            <h3 class="text-lg font-bold font-headline">Technical</h3>
+            <span class="material-symbols-outlined text-primary" data-icon="factory">factory</span>
+            <h3 class="text-lg font-bold font-headline">Operations &amp; Planning</h3>
           </div>
           <div class="flex flex-wrap gap-2">
-            <span class="px-4 py-2 bg-surface-container-highest rounded-full text-sm font-medium">Excel</span>
-            <span class="px-4 py-2 bg-surface-container-highest rounded-full text-sm font-medium">Power BI Basics</span>
-            <span class="px-4 py-2 bg-surface-container-highest rounded-full text-sm font-medium">Web Developer</span>
-            <span class="px-4 py-2 bg-surface-container-highest rounded-full text-sm font-medium">Python</span>
-            <span class="px-4 py-2 bg-surface-container-highest rounded-full text-sm font-medium">SQL query</span>
-            <span class="px-4 py-2 bg-surface-container-highest rounded-full text-sm font-medium">CPLEX</span>
-            <span class="px-4 py-2 bg-surface-container-highest rounded-full text-sm font-medium">LLMs Agents
-              (Openclaw)</span>
-            <span class="px-4 py-2 bg-surface-container-highest rounded-full text-sm font-medium">ML & DL</span>
+            <span class="px-4 py-2 bg-primary-container text-on-primary-container rounded-full text-sm font-medium">Production Planning</span>
+            <span class="px-4 py-2 bg-primary-container text-on-primary-container rounded-full text-sm font-medium">Production Scheduling</span>
+            <span class="px-4 py-2 bg-primary-container text-on-primary-container rounded-full text-sm font-medium">Capacity &amp; Resource Planning</span>
+            <span class="px-4 py-2 bg-primary-container text-on-primary-container rounded-full text-sm font-medium">Process Analysis</span>
+            <span class="px-4 py-2 bg-primary-container text-on-primary-container rounded-full text-sm font-medium">Supply Chain Operations</span>
           </div>
         </div>
         <div class="space-y-6">
           <div class="flex items-center gap-3">
-            <span class="material-symbols-outlined text-primary" data-icon="local_shipping">local_shipping</span>
-            <h3 class="text-lg font-bold font-headline">Logistics</h3>
+            <span class="material-symbols-outlined text-primary" data-icon="analytics">analytics</span>
+            <h3 class="text-lg font-bold font-headline">Data &amp; Analytics</h3>
           </div>
           <div class="flex flex-wrap gap-2">
-            <span
-              class="px-4 py-2 bg-primary-container text-on-primary-container rounded-full text-sm font-medium">Logistics
-              Operations</span>
-            <span
-              class="px-4 py-2 bg-primary-container text-on-primary-container rounded-full text-sm font-medium">Systems
-              Analysis</span>
-            <span
-              class="px-4 py-2 bg-primary-container text-on-primary-container rounded-full text-sm font-medium">Process
-              Optimization</span>
-            <span
-              class="px-4 py-2 bg-primary-container text-on-primary-container rounded-full text-sm font-medium">Supply
-              Chain Technology</span>
-            <span class="px-4 py-2 bg-primary-container text-on-primary-container rounded-full text-sm font-medium">IoT
-              &amp; Blockchain Applications</span>
+            <span class="px-4 py-2 bg-surface-container-highest rounded-full text-sm font-medium">Microsoft Excel</span>
+            <span class="px-4 py-2 bg-surface-container-highest rounded-full text-sm font-medium">Power BI</span>
+            <span class="px-4 py-2 bg-surface-container-highest rounded-full text-sm font-medium">SQL / PostgreSQL</span>
+            <span class="px-4 py-2 bg-surface-container-highest rounded-full text-sm font-medium">Data Analysis &amp; Visualization</span>
+          </div>
+        </div>
+        <div class="space-y-6">
+          <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-primary" data-icon="code">code</span>
+            <h3 class="text-lg font-bold font-headline">Optimization &amp; Programming</h3>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <span class="px-4 py-2 bg-primary-container text-on-primary-container rounded-full text-sm font-medium">Python</span>
+            <span class="px-4 py-2 bg-primary-container text-on-primary-container rounded-full text-sm font-medium">IBM CPLEX</span>
+            <span class="px-4 py-2 bg-primary-container text-on-primary-container rounded-full text-sm font-medium">MATLAB</span>
+            <span class="px-4 py-2 bg-primary-container text-on-primary-container rounded-full text-sm font-medium">Optimization Modeling</span>
           </div>
         </div>
         <div class="space-y-6">
           <div class="flex items-center gap-3">
             <span class="material-symbols-outlined text-primary" data-icon="psychology">psychology</span>
-            <h3 class="text-lg font-bold font-headline">Soft Skills</h3>
+            <h3 class="text-lg font-bold font-headline">AI &amp; Applied Technology</h3>
           </div>
           <div class="flex flex-wrap gap-2">
-            <span class="px-4 py-2 bg-surface-container-highest rounded-full text-sm font-medium">Teamwork</span>
-            <span class="px-4 py-2 bg-surface-container-highest rounded-full text-sm font-medium">Research</span>
-            <span class="px-4 py-2 bg-surface-container-highest rounded-full text-sm font-medium">Project
-              Management</span>
-            <span class="px-4 py-2 bg-surface-container-highest rounded-full text-sm font-medium">Leadership</span>
-            <span class="px-4 py-2 bg-surface-container-highest rounded-full text-sm font-medium">Presentation</span>
+            <span class="px-4 py-2 bg-surface-container-highest rounded-full text-sm font-medium">Machine Learning</span>
+            <span class="px-4 py-2 bg-surface-container-highest rounded-full text-sm font-medium">Computer Vision</span>
+            <span class="px-4 py-2 bg-surface-container-highest rounded-full text-sm font-medium">AI Applications</span>
+            <span class="px-4 py-2 bg-surface-container-highest rounded-full text-sm font-medium">IoT Systems</span>
           </div>
         </div>
       </div>
@@ -501,17 +608,17 @@
         class="bg-primary p-12 rounded-[2.5rem] text-on-primary relative overflow-hidden flex flex-col justify-center">
         <div class="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -mr-16 -mt-16"></div>
         <h2 class="text-2xl font-bold font-headline mb-6">Career Direction</h2>
-        <p class="text-on-primary/80 mb-8 leading-relaxed">I am seeking internship or early-career opportunities in
-          S&OP, Planning, or logistics operations, where I can apply my background in operations thinking, analytical
-          work, and supply chain technology to support better coordination and decision-making.</p>
+        <p class="text-on-primary/80 mb-8 leading-relaxed">I am looking for internship or entry-level opportunities in
+          Production Planning and Manufacturing Operations. I am interested in working in a factory environment, where
+          I can apply my skills in data analysis, optimization, planning, and technology to support production
+          activities and improve operational performance.</p>
         <div class="flex flex-wrap gap-3">
           <span
-            class="border border-on-primary/30 px-4 py-2 rounded-full text-xs font-semibold uppercase tracking-wider">S&OP</span>
+            class="border border-on-primary/30 px-4 py-2 rounded-full text-xs font-semibold uppercase tracking-wider">Production Planning</span>
           <span
-            class="border border-on-primary/30 px-4 py-2 rounded-full text-xs font-semibold uppercase tracking-wider">Planning</span>
+            class="border border-on-primary/30 px-4 py-2 rounded-full text-xs font-semibold uppercase tracking-wider">Manufacturing Operations</span>
           <span
-            class="border border-on-primary/30 px-4 py-2 rounded-full text-xs font-semibold uppercase tracking-wider">Logistics
-            Operations</span>
+            class="border border-on-primary/30 px-4 py-2 rounded-full text-xs font-semibold uppercase tracking-wider">Process Improvement</span>
         </div>
       </div>
     </section>
@@ -521,18 +628,18 @@
         <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div class="md:col-span-1 border-b md:border-b-0 md:border-r border-outline-variant/10 pb-8 md:pb-0 md:pr-8">
             <h3 class="text-xs font-bold uppercase tracking-widest text-primary mb-4">Career Interest</h3>
-            <p class="text-on-surface font-semibold">S&OP / Planning</p>
-            <p class="text-sm text-on-surface-variant mt-1">Logistics Operations Path</p>
+            <p class="text-on-surface font-semibold">Production Planning / Manufacturing Operations</p>
+            <p class="text-sm text-on-surface-variant mt-1">Factory Operations &amp; Process Improvement</p>
           </div>
           <div class="md:col-span-1 border-b md:border-b-0 md:border-r border-outline-variant/10 pb-8 md:pb-0 md:pr-8">
             <h3 class="text-xs font-bold uppercase tracking-widest text-primary mb-4">Languages</h3>
             <p class="text-on-surface font-semibold">Vietnamese (Native)</p>
-            <p class="text-on-surface font-semibold">English (Working Proficiency)</p>
+            <p class="text-on-surface font-semibold">English — Intermediate</p>
           </div>
           <div class="md:col-span-1 border-b md:border-b-0 md:border-r border-outline-variant/10 pb-8 md:pb-0 md:pr-8">
             <h3 class="text-xs font-bold uppercase tracking-widest text-primary mb-4">Focus Area</h3>
-            <p class="text-on-surface font-semibold">Operations &amp; Planning</p>
-            <p class="text-on-surface font-semibold">AI in Supply Chain</p>
+            <p class="text-on-surface font-semibold">Operations &amp; Production Planning</p>
+            <p class="text-on-surface font-semibold">Data, Optimization &amp; AI for Operations</p>
           </div>
           <div class="md:col-span-1 flex items-center justify-center">
             <a href="tanhongphong_cv.pdf" download="TanHongPhong_CV.pdf"
@@ -547,9 +654,11 @@
     <section class="pt-32 pb-8 text-center" id="contact">
       <div class="max-w-3xl mx-auto space-y-12">
         <h2 class="text-5xl font-extrabold font-headline tracking-tight">Let's Connect</h2>
-        <p class="text-xl text-on-surface-variant">I am interested in opportunities related to S&OP, Planning, logistics
-          operations, and supply chain technology. If you are looking for a motivated student with an operations mindset
-          and strong interest in AI-supported supply chain improvement, feel free to reach out.</p>
+        <p class="text-xl text-on-surface-variant">I am interested in internship and entry-level opportunities in
+          <strong>Production Planning, Manufacturing Operations, and Process Improvement</strong>. I hope to apply my
+          strengths in <strong>data analysis, optimization, and AI-supported technology</strong> to support production
+          activities and improve operational performance.<br /><br />Feel free to reach out if you would like to discuss
+          a potential opportunity.</p>
         <div class="flex flex-col justify-center items-center gap-8 py-8 w-full">
           
           <!-- Row 1: Email and Phone -->
@@ -654,6 +763,128 @@
       </p>
     </div>
   </footer>
+  <script>
+    (() => {
+      const projects = {
+        'bird-nest': {
+          title: 'Bird’s Nest Monitoring Robot',
+          tags: ['Robot System', 'Monitoring'],
+          description: 'Researched and designed a monitoring solution for indoor bird’s nest houses, focusing on how operational data can support environmental control and day-to-day supervision.',
+          skills: ['Operational Monitoring', 'Process Observation', 'Data Analysis', 'IoT'],
+          result: 'Built a practical monitoring approach that supports better observation and operational management.'
+        },
+        'picking-robot': {
+          title: 'Autonomous Picking Robot',
+          tags: ['Automation', 'AI'],
+          description: 'Developed a smart picking concept inspired by factory operations, using computer vision to improve object identification and support more efficient task execution.',
+          skills: ['Workflow Analysis', 'Automation', 'Computer Vision', 'Process Improvement'],
+          result: 'Explored how AI-based automation can support operational accuracy and workflow efficiency.'
+        },
+        'food-supply-chain': {
+          title: 'AI, IoT & Blockchain for Food Supply Chain',
+          tags: ['Supply Chain Tech', 'AI', 'IoT'],
+          description: 'Researched the use of AI, IoT, and blockchain in food supply chains to improve information transparency, traceability, and coordination across supply chain activities.',
+          skills: ['Process Analysis', 'Traceability', 'Information Flow', 'Supply Chain Visibility'],
+          result: 'Proposed a supply chain transparency approach that can strengthen trust and visibility in food operations.'
+        }
+      };
+
+      const cards = [...document.querySelectorAll('.project-card')];
+      const list = cards[0]?.parentElement;
+      const detail = document.getElementById('project-detail');
+      const title = document.getElementById('project-detail-title');
+      const description = document.getElementById('project-detail-description');
+      const result = document.getElementById('project-detail-result');
+      const tags = document.getElementById('project-detail-tags');
+      const skills = document.getElementById('project-detail-skills');
+      const gallery = document.getElementById('project-gallery');
+      const thumbs = document.getElementById('project-gallery-thumbs');
+      let activeProject = null;
+      let activeSlide = 0;
+      let galleryTimer = null;
+
+      const pill = (label, style) => `<span class="${style}">${label}</span>`;
+
+      function renderGallery(projectTitle) {
+        const slides = [1, 2, 3, 4];
+        activeSlide = 0;
+        gallery.innerHTML = slides.map((number, index) => `<div class="project-slide ${index === 0 ? 'is-active' : ''} absolute inset-0 items-center justify-center bg-gradient-to-br from-primary-container to-surface-container-high text-center p-8"><div><span class="material-symbols-outlined text-primary text-5xl" data-icon="image">image</span><p class="mt-3 font-semibold text-on-surface">${projectTitle}</p><p class="text-sm text-on-surface-variant">Image ${number} placeholder</p></div></div>`).join('');
+        thumbs.innerHTML = slides.map((number, index) => `<button type="button" data-slide="${index}" class="gallery-thumb ${index === 0 ? 'is-active' : ''} shrink-0 w-20 h-14 rounded-lg bg-surface-container-highest text-xs font-semibold text-on-surface-variant">Image ${number}</button>`).join('');
+        thumbs.querySelectorAll('.gallery-thumb').forEach(button => button.addEventListener('click', () => {
+          showSlide(Number(button.dataset.slide));
+          startGalleryAutoplay();
+        }));
+      }
+
+      function showSlide(index) {
+        const slides = gallery.querySelectorAll('.project-slide');
+        if (!slides.length) return;
+        activeSlide = (index + slides.length) % slides.length;
+        slides.forEach((slide, itemIndex) => slide.classList.toggle('is-active', itemIndex === activeSlide));
+        thumbs.querySelectorAll('.gallery-thumb').forEach((thumb, itemIndex) => thumb.classList.toggle('is-active', itemIndex === activeSlide));
+      }
+
+      function startGalleryAutoplay() {
+        window.clearInterval(galleryTimer);
+        galleryTimer = window.setInterval(() => showSlide(activeSlide + 1), 4500);
+      }
+
+      function openProject(id) {
+        const project = projects[id];
+        if (!project) return;
+        activeProject = id;
+        title.textContent = project.title;
+        description.textContent = project.description;
+        result.textContent = project.result;
+        tags.innerHTML = project.tags.map(tag => pill(tag, 'px-3 py-1 bg-surface-container-highest rounded-full text-xs font-medium text-on-surface-variant')).join('');
+        skills.innerHTML = project.skills.map(skill => pill(skill, 'px-3 py-1 bg-primary-container text-on-primary-container rounded-full text-xs font-medium')).join('');
+        renderGallery(project.title);
+        startGalleryAutoplay();
+        detail.classList.remove('hidden');
+        list.classList.add('project-list-compact');
+        cards.forEach(card => {
+          const selected = card.dataset.project === id;
+          card.classList.toggle('is-selected', selected);
+          card.setAttribute('aria-expanded', String(selected));
+        });
+        detail.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+
+      function closeProject() {
+        activeProject = null;
+        window.clearInterval(galleryTimer);
+        galleryTimer = null;
+        detail.classList.add('hidden');
+        list.classList.remove('project-list-compact');
+        cards.forEach(card => {
+          card.classList.remove('is-selected');
+          card.setAttribute('aria-expanded', 'false');
+        });
+      }
+
+      cards.forEach(card => {
+        card.addEventListener('click', () => openProject(card.dataset.project));
+        card.addEventListener('keydown', event => {
+          if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            openProject(card.dataset.project);
+          }
+        });
+      });
+      document.getElementById('project-detail-close').addEventListener('click', closeProject);
+      let touchStartX = null;
+      gallery.addEventListener('touchstart', event => { touchStartX = event.changedTouches[0].screenX; }, { passive: true });
+      gallery.addEventListener('touchend', event => {
+        if (touchStartX === null) return;
+        const distance = event.changedTouches[0].screenX - touchStartX;
+        if (Math.abs(distance) > 40) {
+          showSlide(activeSlide + (distance < 0 ? 1 : -1));
+          startGalleryAutoplay();
+        }
+        touchStartX = null;
+      }, { passive: true });
+    })();
+  </script>
 </body>
 
 </html>
